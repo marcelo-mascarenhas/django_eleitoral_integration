@@ -1,0 +1,26 @@
+{
+	"access_keys":
+	[ 
+		{
+			"consumer_key": "oNd0cyxwMlnYBii9gE5hDz7qN",
+			"consumer_secret":"Ke6kXWc6xTTEfjFtSG6CWyoxEUCIxgK0UpJ4bPv9QDsYLZg194",
+			"access_token":"1393301211869220867-5JK8tUDKorPosB7GoEWpKb7sTR5vQf",
+			"access_token_secret":"oqUzVmtx6afANt57NpXHaEucywpNhDYYHjCaLFx4Fbbz5",
+			"bearer_token":"AAAAAAAAAAAAAAAAAAAAALdfQwEAAAAAoyYM7Tk40EizPczUDhIWaghEzdA%3DmEEzPKENJzfLJVwhSMx0tyg1pHBv4cAz2n3FGkDp5NkSXxKbS6"
+
+
+		},
+		{
+			"consumer_key": "CdIuhleMyXJVMDZzG23dv6ILt",
+			"consumer_secret":"Nh9QowejEN0gBprT4Tua69dX3YFDFyMNXmpcV3rSqOQua8UNGD",
+			"access_token":"3377920695-805ZjTnbxv75zM9pd7AIw5ychN0nw1YWLrJYUDi",
+			"access_token_secret":"VKvLlVePLLu9X2nmLKxoNZS4bpSL7CwSIkDmIAmQJh1if",
+			"bearer_token":"AAAAAAAAAAAAAAAAAAAAAPw%2FQAEAAAAAE4mZPXU5CGEFqqJcftNtp5LhgpU%3D1KdsV0DJf5OUxCtIYnF53gDF9EZdqVX4eeeXXBHQqvNKwMXqtE"
+		}
+	
+	],
+	
+	"keywords":["Bolsonaro", "Lula", "Ciro Gomes", "PT"],
+
+	"only_portuguese": true
+}
