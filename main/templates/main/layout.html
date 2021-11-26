@@ -1,0 +1,46 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>{% block title %}Monitor{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'main/styles.css' %}" rel="stylesheet">
+    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js'></script>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+  </head>
+
+  <body>
+    <header class="flex-container">
+        <div>
+            <h1 id='title'>Monitor de Propaganda Eleitoral</h1>
+        </div>
+        <nav>
+            <ul class="nav">
+                 <li class="nav-item">
+                    <a class="nav-link" href={% url 'index' %}>Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href={% url 'execucao' %}>Execução</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Análise de dados</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="">Configurações</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    {% block body %}
+    {% endblock body %}
+  </body>
+</html>
+
+

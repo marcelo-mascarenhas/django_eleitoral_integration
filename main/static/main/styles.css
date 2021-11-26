@@ -1,0 +1,39 @@
+*{
+  margin: 0px;
+  border: 0px;
+  box-sizing: border-box;
+}
+
+main{
+  padding:10px;
+}
+
+article{
+  font-size: 20px;
+}
+ul li{
+  list-style-type: none;
+}
+
+
+.flex-container{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color:#202020;
+  color: azure;
+  min-height: 12vh;
+  padding-left: 15px;
+  font-size: medium;
+}
+
+.flex-container2{
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content: center;
+}
+
+#title{
+  font-size: xx-large;
+}

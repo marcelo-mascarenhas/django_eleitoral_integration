@@ -1,0 +1,22 @@
+{% extends 'main/layout.html' %}
+
+{% block body %}
+<main class="flex-container2">
+  <h2>Opções de controle de execução da ferramenta</h2>
+
+    {% if running %}
+      <button type="button" class="btn btn-primary" onclick="location.href='{% url 'stopCollector' %}'">Parar coletor</button>
+    {% else %}
+      <button type="button" class="btn btn-primary" onclick="location.href='{% url 'executeCollector' %}'">Executar coletor</button>
+    {% endif %}
+
+  </div>
+
+</main>
+
+
+
+
+{% endblock body %}
+
+
