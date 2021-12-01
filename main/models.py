@@ -32,7 +32,7 @@ class Tweet(models.Model):
   evaluation_method = models.CharField(max_length=12, null=True) 
   
   
-class MachineLearningMethods(models.Model):
+class MachineLearningMethod(models.Model):
   
   method = models.CharField(primary_key=True, max_length=15)
   

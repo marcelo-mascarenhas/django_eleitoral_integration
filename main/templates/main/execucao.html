@@ -5,9 +5,19 @@
   <h2>Opções de controle de execução da ferramenta</h2>
 
     {% if running %}
+      
       <button type="button" class="btn btn-primary" onclick="location.href='{% url 'stopCollector' %}'">Parar coletor</button>
+    
     {% else %}
       <button type="button" class="btn btn-primary" onclick="location.href='{% url 'executeCollector' %}'">Executar coletor</button>
+      
+      {% if error_msg != None %}
+        <hr>
+        <div class="alert">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <strong>Erro:</strong><br>{{error_msg}}
+        </div>
+      {% endif %}
     {% endif %}
 
   </div>

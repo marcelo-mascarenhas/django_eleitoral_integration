@@ -27,10 +27,6 @@ class Integrator():
     if self.configuration_path == None or self.model_path == None:
       raise ValueError('Caminho para o arquivo de configuração ou diretório do modelo não existem.')
   
-  
-  
-  
-  
   def __createTwitterObject(self):
     """
       Open json configuration file and create TwitterCollector object

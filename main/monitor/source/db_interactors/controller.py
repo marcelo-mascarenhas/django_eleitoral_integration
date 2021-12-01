@@ -5,7 +5,7 @@ class Controller():
   """Class that control the exit of the collector when the user says so in the interface."""
   def __init__(self):
     self.__check_process()
-  
+      
   def __check_process(self):
     """
     Check if the object responsible to controll the execution of the collector exists in the database.
@@ -30,6 +30,4 @@ class Controller():
     
     process = self.__check_process()
     if process.continue_run == False:
-      process.continue_run = True
-      process.save()
       exit()

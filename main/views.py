@@ -1,16 +1,15 @@
 import django_rq
 
 from .models import *
-from django.shortcuts import render, redirect, reverse
-from django_rq.decorators import job
-from integrated.settings import COLLECTOR_JOB_NAME, COLLECTOR_JOB_ID
+from django.shortcuts import render, redirect
+from integrated.settings import COLLECTOR_JOB_NAME, MAX_INT, ERROR_MSG
 from main.monitor.caller import django_caller
 from main.utils import *
-
-MAX_INT = 100000000
+import time
 
 
 def index(request):
+  createMachineLearningMethods()
   return render(request, 'main/index.html')
 
 def execution(request, status=None):
@@ -18,15 +17,18 @@ def execution(request, status=None):
   
   if running == True:
     collector_job = getJob(COLLECTOR_JOB_NAME)
-    status = collector_job.get_status()
+    condition = collector_job.get_status()
+    print(condition)
     
-    if status == "failed":
+    if condition == "failed":
+      
       running = False
-      status = collector_job.exc_info
-      print(status)
+      condition = collector_job.exc_info
+      status = condition if ERROR_MSG not in condition else None
       
   return render(request, 'main/execucao.html', {
     'running': running,
+    'error_msg': status
   })
 
 
@@ -36,24 +38,15 @@ def executeCollector(request):
     queue.empty()
   
   queue.enqueue(django_caller, job_id=COLLECTOR_JOB_NAME, result_ttl=MAX_INT)
-  
+  executionObjectSetter()
+      
   return redirect(execution)
 
 def stopCollector(request):
   collector_job = getJob(COLLECTOR_JOB_NAME)
   
   collector_job.delete()
-  process = None
+  executionObjectSetter(run=False)
   
-  try:
-    process = ExecutionHandler.objects.get(process_id=COLLECTOR_JOB_ID)
-    process.continue_run = False
-    process.save()
-    
-    
-  except ExecutionHandler.DoesNotExist:
-    process = ExecutionHandler(process_id=COLLECTOR_JOB_ID, continue_run=False)
-    process.save()
-  
-  
+  time.sleep(1)
   return redirect(execution)

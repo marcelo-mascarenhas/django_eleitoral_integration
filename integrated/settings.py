@@ -77,10 +77,14 @@ WSGI_APPLICATION = 'integrated.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
+
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'database' / 'db.sqlite3',
     }
 }
 
@@ -136,4 +140,9 @@ RQ_QUEUES = {
 RQ_SHOW_ADMIN_LINK = True
 
 COLLECTOR_JOB_NAME = 'collector'
+
 COLLECTOR_JOB_ID = 1
+
+MAX_INT = 100000000
+
+ERROR_MSG = 'SystemExit: None'

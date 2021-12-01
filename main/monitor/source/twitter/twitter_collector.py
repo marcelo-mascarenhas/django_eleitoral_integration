@@ -141,7 +141,7 @@ class TwitterCollector():
       except TwitterRequestError as e:        
         
         comparator = json.loads(e.msg)['title']
-        print("Deu ruim aqui ó")
+        # print("Deu ruim aqui ó")
         
         if comparator == "UsageCapExceeded":
           self.__treat_exhausted_keys()
