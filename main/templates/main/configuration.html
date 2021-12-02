@@ -1,0 +1,25 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block script %}
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.5.7/jsoneditor.min.js" integrity="sha512-AZMllTAUq+DfrIKphpa5ppBD0mZy08Orh+fDJiTYk5c6vw19I3ibbXduFt42BUQqYhKQXEVA+QLAZWw9YlO0Dw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="{% static "js/configuration.js" %}"></script>
+
+{% endblock script %}
+
+
+{% block body %}
+  
+  <h1 class='flex-container3'>Opções de configuração</h1>
+  <div id="jsoneditor"></div>  
+  <script>let data = {{ json_information|safe }}; config_editor(data)</script>
+  
+  <form action="" class='z-pad' method="post" onsubmit="return ">
+      {% csrf_token %}
+      <div>{{ ml_methods }}</div>
+      <button type="button" class="btn btn-primary">Salvar</button>    
+
+
+{% endblock body %}

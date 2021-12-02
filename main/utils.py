@@ -1,10 +1,11 @@
 import django_rq
+import json
 
 from .models import ExecutionHandler, MachineLearningMethod
-from integrated.settings import COLLECTOR_JOB_ID
+from integrated.settings import COLLECTOR_JOB_ID, CONFIGURATION_PATH, TWITTER_FILE_NAME, ELECT_FILE_NAME
 from .monitor.source.identificacao.identificacao import METODOS_POSSIVEIS
 
-def does_JobExists(job_name):
+def doesJobExists(job_name):
   task_queue = django_rq.get_queue()
   job = task_queue.fetch_job(job_id=job_name)
   if job == None:
@@ -38,5 +39,26 @@ def createMachineLearningMethods():
     if not MachineLearningMethod.objects.filter(method=name).exists():
       obj = MachineLearningMethod(method=name)
       obj.save()
+
+
+class FileHandler():
+  def getTwitterConfigurationFile(self):
+    with open(f'{CONFIGURATION_PATH}/{TWITTER_FILE_NAME}', 'r') as f:
+      file_information = json.load(f)
       
+    file_information = json.dumps(file_information)
+    return file_information
+  
+  def saveTwitterConfigurationFile(self):
+    pass
+  
+  
+  def selectedMlMethod(self):
+    
+    with open(f'{CONFIGURATION_PATH}/{ELECT_FILE_NAME}', 'r') as f:
+      file_information = json.load(f)
+    method = file_information['metodo_selecionado']
+    
+    return method
+  
        

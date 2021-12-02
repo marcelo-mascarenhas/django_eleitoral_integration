@@ -1,0 +1,84 @@
+*{
+  margin: 0px;
+  border: 0px;
+  box-sizing: border-box;
+}
+
+main{
+  padding:10px;
+}
+
+article{
+  font-size: 20px;
+}
+ul li{
+  list-style-type: none;
+}
+
+#jsoneditor{
+  padding: 10px;
+  width: 205vh;
+  
+  height: 65vh;
+}
+
+
+#title{
+  font-size: xx-large;
+}
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+
+.flex-container{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color:#202020;
+  color: azure;
+  min-height: 12vh;
+  padding-left: 15px;
+  font-size: medium;
+}
+
+.flex-container2{
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content: center;
+}
+
+.flex-container3{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+    padding-top: 10px;
+  
+}
+
+.z-pad{
+  padding:10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

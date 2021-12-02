@@ -18,6 +18,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 CONFIGURATION_PATH = os.path.join(BASE_DIR, 'main/monitor/configurations/')
 MODEL_FILES_PATH = os.path.join(BASE_DIR, 'main/monitor/model_files/')
 
+TWITTER_FILE_NAME = 'twitter_configuration.json'
+ELECT_FILE_NAME = 'identifier_tool_configuration.json'
+
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -146,3 +151,4 @@ COLLECTOR_JOB_ID = 1
 MAX_INT = 100000000
 
 ERROR_MSG = 'SystemExit: None'
+

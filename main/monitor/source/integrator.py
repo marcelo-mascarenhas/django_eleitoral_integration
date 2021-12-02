@@ -3,15 +3,14 @@ from TwitterAPI.TwitterError import TwitterRequestError, TwitterConnectionError
 from .twitter.twitter_collector import *
 
 from .identificacao.identificacao import PropagandaIdentifier
+from integrated.settings import TWITTER_FILE_NAME, ELECT_FILE_NAME 
+
 
 from .db_interactors.db_saver import InformationHandler
 from .db_interactors.controller import Controller
 
 import json
 import os
-
-TWITTER_FILE_NAME = 'twitter_configuration.json'
-ELECT_FILE_NAME = 'identifier_tool_configuration.json'
 
 
 class Integrator():

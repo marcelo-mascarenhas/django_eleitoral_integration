@@ -1,11 +1,15 @@
 import django_rq
+import json
+import time
+
+from .forms import ConfigurationForm
+
 
 from .models import *
 from django.shortcuts import render, redirect
 from integrated.settings import COLLECTOR_JOB_NAME, MAX_INT, ERROR_MSG
 from main.monitor.caller import django_caller
 from main.utils import *
-import time
 
 
 def index(request):
@@ -13,7 +17,7 @@ def index(request):
   return render(request, 'main/index.html')
 
 def execution(request, status=None):
-  running = does_JobExists(COLLECTOR_JOB_NAME)
+  running = doesJobExists(COLLECTOR_JOB_NAME)
   
   if running == True:
     collector_job = getJob(COLLECTOR_JOB_NAME)
@@ -29,6 +33,18 @@ def execution(request, status=None):
   return render(request, 'main/execucao.html', {
     'running': running,
     'error_msg': status
+  })
+
+def configuration(request):
+  
+  fih = FileHandler()
+  file_information = fih.getTwitterConfigurationFile()
+  config_forms = ConfigurationForm()
+  config_forms.fields['mtd'].initial = fih.selectedMlMethod()
+  
+  return render(request, 'main/configuration.html', {
+    'json_information': file_information,
+    'ml_methods': config_forms
   })
 
 
