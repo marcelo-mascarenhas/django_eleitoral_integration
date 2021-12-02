@@ -14,3 +14,4 @@ class ConfigurationForm(forms.Form):
   mtd = forms.CharField(label='Escolha um método de detecção: ', \
     widget=forms.Select(choices=choices))
   
+  twitter_configuration = forms.CharField()

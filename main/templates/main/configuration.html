@@ -14,11 +14,15 @@
   
   <h1 class='flex-container3'>Opções de configuração</h1>
   <div id="jsoneditor"></div>  
-  <script>let data = {{ json_information|safe }}; config_editor(data)</script>
   
-  <form action="" class='z-pad' method="post" onsubmit="return ">
+  <script>
+    let data = {{ json_information|safe }}; 
+    config_editor(data)
+  </script>
+  
+  <form action="" class='z-pad' method="post" onsubmit="return fowardJson()">
       {% csrf_token %}
-      <div>{{ ml_methods }}</div>
+      <div>Selecione um método de detecção: {{ ml_methods.mtd }}</div>
       <button type="button" class="btn btn-primary">Salvar</button>    
 
 
