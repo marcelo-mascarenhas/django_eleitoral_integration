@@ -18,34 +18,31 @@ const PT_ARRAY = [PT_ACCESS_KEYS, PT_KEYWORDS, PT_ONLY_PT];
 //Original key array
 const EN_ARRAY = [ACCESS_KEYS, KEYWORDS, ONLY_PT];
 
-
-
 function config_editor(data){
   const container = document.getElementById("jsoneditor");
   const options = {
     mode: 'tree'
   };
-  const editor = new JSONEditor(container, options);
+  //Global variable.
+  editor = new JSONEditor(container, options);
 
   const initialJson = getTranslatedJson(data, en_to_pt=true)
   editor.set(initialJson);
 }
 
 function fowardJson(){
-  let modified_json = editor.get();
+   //Get JSON object from string   //Get JSON string from editor(cannot do it directly).
+  var modified_json = JSON.parse(JSON.stringify(editor.get(),null,2));
+
   PT_ARRAY.forEach(element => {
-    if (!(PT_ARRAY in modified_json)){
+    if (!(element in modified_json)){
       alert(`O campo ${element} foi removido do JSON de configuração. Favor realizar a reinserção.`);
-      return false;
     }
   });
-
-  let new_json = getTranslatedJson(modified_json, en_to_pt=false);
-  document.getElementById('twitter_configuration') = JSON.stringify(new_json);
+  var new_json = getTranslatedJson(modified_json, en_to_pt=false);
+  document.getElementById('id_twitter_configuration').value = JSON.stringify(new_json);
   return true;
 }
-
-
 
 function getTranslatedJson(data_json, en_to_pt = true){
 
@@ -57,12 +54,11 @@ function getTranslatedJson(data_json, en_to_pt = true){
     target_language = EN_ARRAY;
   }
 
-  let new_json = {};
+  var new_json = {};
   for(let i = 0; i < translated_language.length; i++){
     new_json[target_language[i]] = data_json[translated_language[i]];
   }
 
   return new_json;
-
 
 }

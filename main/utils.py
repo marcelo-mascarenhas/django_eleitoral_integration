@@ -5,6 +5,7 @@ from .models import ExecutionHandler, MachineLearningMethod
 from integrated.settings import COLLECTOR_JOB_ID, CONFIGURATION_PATH, TWITTER_FILE_NAME, ELECT_FILE_NAME
 from .monitor.source.identificacao.identificacao import METODOS_POSSIVEIS
 
+
 def doesJobExists(job_name):
   task_queue = django_rq.get_queue()
   job = task_queue.fetch_job(job_id=job_name)
@@ -33,7 +34,6 @@ def executionObjectSetter(run=True):
     process.save()
     
     
-    
 def createMachineLearningMethods():
   for name in METODOS_POSSIVEIS:
     if not MachineLearningMethod.objects.filter(method=name).exists():
@@ -42,6 +42,7 @@ def createMachineLearningMethods():
 
 
 class FileHandler():
+  
   def getTwitterConfigurationFile(self):
     with open(f'{CONFIGURATION_PATH}/{TWITTER_FILE_NAME}', 'r') as f:
       file_information = json.load(f)
@@ -49,8 +50,14 @@ class FileHandler():
     file_information = json.dumps(file_information)
     return file_information
   
-  def saveTwitterConfigurationFile(self):
-    pass
+  def saveInformationFiles(self, twitter_data, selected_method):
+    """
+    Save the information in Twitter/Electoral files.
+    """
+    td = json.loads(twitter_data)
+    
+    self.__saveTwitterFile(td)     
+    self.__saveElectoralFile(selected_method)
   
   
   def selectedMlMethod(self):
@@ -61,4 +68,28 @@ class FileHandler():
     
     return method
   
-       
+
+  def __saveTwitterFile(self, data):
+    with open(f'{CONFIGURATION_PATH}/{TWITTER_FILE_NAME}', 'r+') as f:
+      file_information = json.load(f)
+            
+      for field in data:
+        file_information[field] = data[field]
+      
+      f.seek(0)
+      f.truncate()
+      json.dump(file_information, f, indent=5, ensure_ascii=False)
+      f.flush()
+      f.close()
+      
+  def __saveElectoralFile(self,data):
+    with open(f'{CONFIGURATION_PATH}/{ELECT_FILE_NAME}', 'r+') as f:
+      file_information = json.load(f)
+      
+      file_information["metodo_selecionado"] = data
+      
+      f.seek(0)
+      f.truncate()
+      json.dump(file_information, f, indent=7, ensure_ascii=False)  
+      f.flush()
+      f.close()

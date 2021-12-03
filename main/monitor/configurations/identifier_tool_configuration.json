@@ -1,31 +1,36 @@
 {
-	"modelo_preliminar": {"caminho_arquivo_reforco":"preliminar/reforco.json",
-			"caminho_arquivo_pesos":"preliminar/pesos.json",
-			"caminho_arquivo_blacklist":"preliminar/blacklist.txt", 
-                        "versao": "1.0"},
-
-        "modelo_naive_bayes": {"caminho_arquivo_skl":"nbayes/v1/naive_twitter_text_2020_only_ben.skl", 
-                "versao":"1.0"},
-
-        "modelo_rnn": {"caminho_arquivo_npy": "rnn/v1/vocabulary.npy", 
-                "caminho_arquivo_h5": "rnn/v1/twitter_text_2020_only_3.h5", 
-                "caminho_arquivo_word2vec": "w2v/cbow_s300.txt", 
-                "versao":"1.0"},
-
-        "modelo_han": {"caminho_arquivo_npy": "han/v1/vocabulary.npy", 
-                "caminho_arquivo_h5": "han/v1/twitter_text_2020_only_9.h5", 
-                "caminho_arquivo_word2vec": "w2v/cbow_s300.txt", 
-                "versao":"1.0"},
-
-        "modelo_lstm": {"caminho_arquivo_npy": "lstm/v1/vocabulary.npy", 
-                "caminho_arquivo_h5": "lstm/v1/twitter_text_2020_only_1.h5", 
-                "caminho_arquivo_word2vec": "w2v/cbow_s300.txt", 
-                "versao":"1.0"},
-
-        "modelo_cnn": {"caminho_arquivo_h5": "cnn/v1/cnn_model.h5",
-                "caminho_arquivo_npy": "cnn/v1/cnn_model.npy",
-                "versao": "1.0"},
-
-        "metodo_selecionado": "lstm"
-
+       "modelo_preliminar": {
+              "caminho_arquivo_reforco": "preliminar/reforco.json",
+              "caminho_arquivo_pesos": "preliminar/pesos.json",
+              "caminho_arquivo_blacklist": "preliminar/blacklist.txt",
+              "versao": "1.0"
+       },
+       "modelo_naive_bayes": {
+              "caminho_arquivo_skl": "nbayes/v1/naive_twitter_text_2020_only_ben.skl",
+              "versao": "1.0"
+       },
+       "modelo_rnn": {
+              "caminho_arquivo_npy": "rnn/v1/vocabulary.npy",
+              "caminho_arquivo_h5": "rnn/v1/twitter_text_2020_only_3.h5",
+              "caminho_arquivo_word2vec": "w2v/cbow_s300.txt",
+              "versao": "1.0"
+       },
+       "modelo_han": {
+              "caminho_arquivo_npy": "han/v1/vocabulary.npy",
+              "caminho_arquivo_h5": "han/v1/twitter_text_2020_only_9.h5",
+              "caminho_arquivo_word2vec": "w2v/cbow_s300.txt",
+              "versao": "1.0"
+       },
+       "modelo_lstm": {
+              "caminho_arquivo_npy": "lstm/v1/vocabulary.npy",
+              "caminho_arquivo_h5": "lstm/v1/twitter_text_2020_only_1.h5",
+              "caminho_arquivo_word2vec": "w2v/cbow_s300.txt",
+              "versao": "1.0"
+       },
+       "modelo_cnn": {
+              "caminho_arquivo_h5": "cnn/v1/cnn_model.h5",
+              "caminho_arquivo_npy": "cnn/v1/cnn_model.npy",
+              "versao": "1.0"
+       },
+       "metodo_selecionado": "rnn"
 }

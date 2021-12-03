@@ -9,5 +9,5 @@ urlpatterns = [
   path("execucao/start_collector/", views.executeCollector, name="executeCollector"),
   path('django-rq/', include('django_rq.urls')),
   path("execucao/stop_collector/", views.stopCollector, name="stopCollector"),
-  path("configuration", views.configuration, name="configuration")
+  path("configuration", views.Configuration.as_view(), name="configuration"),
 ]

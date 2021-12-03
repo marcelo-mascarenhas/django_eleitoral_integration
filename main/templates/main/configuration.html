@@ -20,10 +20,14 @@
     config_editor(data)
   </script>
   
-  <form action="" class='z-pad' method="post" onsubmit="return fowardJson()">
+  <form action="{% url 'configuration' %}" class='z-pad' method="POST" onsubmit="return fowardJson()" id="myform">
       {% csrf_token %}
-      <div>Selecione um método de detecção: {{ ml_methods.mtd }}</div>
-      <button type="button" class="btn btn-primary">Salvar</button>    
-
+      
+      <div>Selecione um método de detecção: {{ ml_methods.mtd }} 
+        {{ ml_methods.twitter_configuration.as_hidden }}
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Salvar</button>    
+  </form>
 
 {% endblock body %}
