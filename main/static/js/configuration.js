@@ -60,5 +60,4 @@ function getTranslatedJson(data_json, en_to_pt = true){
   }
 
   return new_json;
-
 }

@@ -6,6 +6,7 @@
 
 main{
   padding:10px;
+  max-width: 100% !important;
 }
 
 article{
