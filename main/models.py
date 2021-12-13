@@ -15,6 +15,7 @@ class User(models.Model):
   
   created_at = models.DateTimeField()
  
+ 
 class Tweet(models.Model):
   
   tweet_id = models.BigIntegerField(primary_key=True)
@@ -22,15 +23,23 @@ class Tweet(models.Model):
   author_id = models.BigIntegerField()
   
   text = models.CharField(max_length=280)
-  
-  lang = models.CharField(max_length=6, null=True)
-  
+    
   created_at = models.DateTimeField()
   
   electoral_score = models.FloatField(null=True)  
   
   evaluation_method = models.CharField(max_length=12, null=True) 
+    
+  retweet_count = models.SmallIntegerField()
   
+  reply_count = models.SmallIntegerField()
+  
+  like_count = models.SmallIntegerField()
+  
+  quote_count = models.SmallIntegerField()
+  
+  referenced = models.BooleanField()
+
   
 class MachineLearningMethod(models.Model):
   

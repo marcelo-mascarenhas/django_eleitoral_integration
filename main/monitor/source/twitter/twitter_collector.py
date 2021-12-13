@@ -11,8 +11,8 @@ from .aux_functions import *
 
 
 PLACE_FIELDS = 'country,name,place_type'
-EXPANSIONS = 'referenced_tweets.id.author_id'
-TWEET_FIELDS = 'author_id,created_at,public_metrics,text'
+EXPANSIONS = 'attachments.media_keys,referenced_tweets.id.author_id,geo.place_id'
+TWEET_FIELDS = 'attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,public_metrics,text,referenced_tweets'
 USER_FIELDS = 'created_at,description,id,name,username,verified,location,url'
 
 

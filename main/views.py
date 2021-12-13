@@ -9,6 +9,8 @@ from django.views.generic.edit import FormView
 
 from .models import *
 
+from django.db.models import Avg
+
 from django.shortcuts import render, redirect, HttpResponseRedirect
 
 from integrated.settings import COLLECTOR_JOB_NAME, MAX_INT, ERROR_MSG
@@ -19,8 +21,21 @@ from main.utils import *
 
 
 def index(request):
+  
   createMachineLearningMethods()
-  return render(request, 'main/index.html')
+  
+  tt = Tweet.objects.count()
+  try:
+    avg_score = Tweet.objects.aggregate(Avg('electoral_score')) 
+    avg_score = round(avg_score['electoral_score__avg'], 5)
+  except:
+    avg_score = 0
+ 
+  return render(request, 'main/index.html', {
+    'total_tweets' :tt,
+    'avg_score': avg_score,
+    
+  })
 
 def execution(request, status=None):
   running = doesJobExists(COLLECTOR_JOB_NAME)
@@ -69,7 +84,7 @@ class Configuration(FormView):
   
   def get(self, request, error_msg=None):    
     file_information = self.fih.getTwitterConfigurationFile()
-    self.config_forms.fields['mtd'].selected = self.fih.selectedMlMethod()
+    selected = self.fih.selectedMlMethod()
 
     
     print(self.fih.selectedMlMethod())
@@ -77,7 +92,8 @@ class Configuration(FormView):
     return render(request, self.template_name, {
       'json_information': file_information,
       'ml_methods': self.config_forms,
-      'error': error_msg
+      'error': error_msg,
+      'selected': selected
     })
   
           

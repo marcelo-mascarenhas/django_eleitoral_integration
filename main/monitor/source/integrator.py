@@ -64,25 +64,35 @@ class Integrator():
     database_interactor = InformationHandler()
     controller_object = Controller()
     
-    
     first_tweet, cursor = twitterobj.getStreamCursor()
+    
     while True:
       try:
+        
         first_tweet_data = first_tweet['data']
-        
+                
         if classify:
+          
+          if 'referenced_tweets' in first_tweet_data and 'id_hydrate' in first_tweet_data['referenced_tweets'][0]:
+            new_tt = first_tweet_data['referenced_tweets'][0]['id_hydrate']
+            
+            new_tt['score'] = str(electobj.escreve_score_metodo(new_tt['text']))
+            
+            new_tt['utilized_method'] = electobj.metodo_selecionado
+            
+            database_interactor.saveInformation(new_tt, referenced=True)
+            
+            
           score = electobj.escreve_score_metodo(first_tweet_data['text'])
+          
           first_tweet_data['score'] = str(score)
+          
           first_tweet_data['utilized_method'] = electobj.metodo_selecionado
+      
         
-        
-        # TODO: Implementar um databus para liberar o pipeline de coleta/classificação.
         database_interactor.saveInformation(first_tweet_data)
-        
-        print(json.dumps(first_tweet_data, indent=5, ensure_ascii=False))
-        
+                
         controller_object.shouldContinue()
-        
         first_tweet = cursor.__next__()
 
       except (TwitterConnectionError,TwitterRequestError) as e:

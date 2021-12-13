@@ -416,7 +416,7 @@ input::placeholder{color:#71717a;opacity:1;}
 .text-blueGray-400{--tw-text-opacity:1;color:rgba(148, 163, 184, var(--tw-text-opacity));}
 .text-blueGray-500{--tw-text-opacity:1;color:rgba(100, 116, 139, var(--tw-text-opacity));}
 .text-blueGray-600{--tw-text-opacity:1;color:rgba(71, 85, 105, var(--tw-text-opacity));}
-.text-blueGray-700{--tw-text-opacity:1;color:rgba(51, 65, 85, var(--tw-text-opacity));}
+.text-blueGray-700{--tw-text-opacity:1;color:rgba(51, 65, 85, var(--tw-text-opacity)); font-size: x-large;}
 .hover\:text-lightBlue-600:hover{--tw-text-opacity:1;color:rgba(2, 132, 199, var(--tw-text-opacity));}
 .hover\:text-blueGray-500:hover{--tw-text-opacity:1;color:rgba(100, 116, 139, var(--tw-text-opacity));}
 .hover\:text-blueGray-700:hover{--tw-text-opacity:1;color:rgba(51, 65, 85, var(--tw-text-opacity));}

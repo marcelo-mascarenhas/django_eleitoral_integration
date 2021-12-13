@@ -26,6 +26,9 @@
       <div>Selecione um método de detecção: {{ ml_methods.mtd }} 
         {{ ml_methods.twitter_configuration.as_hidden }}
       </div>
+      <script>
+        let new_data = "{{ selected }}";
+        selectRightOption(new_data)</script>
       
       <button type="submit" class="btn btn-primary">Salvar</button>    
   </form>
