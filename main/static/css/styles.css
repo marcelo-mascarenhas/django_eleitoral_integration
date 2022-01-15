@@ -48,7 +48,25 @@ ul li{
 .closebtn:hover {
   color: black;
 }
+.fx1{
+  display: flex;
+  flex-direction: row;
+}
 
+.flex-left {
+  width: 25%;
+  padding-left: 10px;
+  border-right: 2px solid gainsboro;
+  margin-right: 8px;
+
+
+}
+
+.flex-right {
+  width: 75%;
+  border-spacing: 15px;
+  padding-bottom: 5px;
+}
 
 .flex-container{
   display:flex;
@@ -82,4 +100,112 @@ ul li{
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.tweet-wrap {
+  max-width:90%;
+  background: azure;
+  margin-top: 15px;
+  border-radius:3px;
+  padding: 10px;
+  border: 1.5px solid #A1C9D7;
+}
+
+.tweet-header {
+  display: flex;
+  align-items:flex-start;
+  font-size:14px;
+}
+.tweet-header-info {
+  font-weight:bold;
+}
+.tweet-header-info span {
+  color:#657786;
+  font-weight:normal;
+  margin-left: 5px;
+}
+.tweet-header-info p {
+  font-weight:normal;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+.tweet-img-wrap {
+  padding-left: 60px;
+}
+
+.tweet-info-counts {
+  display: flex;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.tweet-info-counts div {
+  display: flex;
+  margin-right: 5px;
+}
+.tweet-info-counts div svg {
+  color:#657786;
+  margin-right: 5px;
+}
+@media screen and (max-width:430px){
+  body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .tweet-header {
+    flex-direction:column;
+  }
+  .tweet-header img {
+    margin-bottom: 20px;
+  }
+  .tweet-header-info p {
+    margin-bottom: 30px;
+  }
+  .tweet-img-wrap {
+    padding-left: 0;
+  }
+  .tweet-info-counts {
+  display: flex;
+  margin-left: 0;
+}
+.tweet-info-counts div {
+  margin-right: 10px;
+}
+}
+
+
+
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+
+.search {
+  width: 90%;
+  position: relative;
+  display: flex;
+}
+
+.searchTerm {
+  width: 100%;
+  border: 1px solid #00B4CC;
+  padding: 5px;
+  height: 30px;
+  border-radius: 5px;
+  outline: none;
+  color: #9DBFAF;
+}
+
+.searchTerm:focus{
+  color: black;
+}
+
+.searchButton {
+  width: 40px;
+  height: 36px;
+  border: 1px solid #00B4CC;
+  background: #00B4CC;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
 }

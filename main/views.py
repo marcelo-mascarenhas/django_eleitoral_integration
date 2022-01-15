@@ -1,3 +1,4 @@
+from pickle import NONE
 from django.views.generic.base import View
 import django_rq
 import json
@@ -21,10 +22,14 @@ from main.utils import *
 
 
 def index(request):
+  """
+  Load the dashboard and the initial configuration.
   
+  """
   createMachineLearningMethods()
   
   tt = Tweet.objects.count()
+  avg_score = NONE
   try:
     avg_score = Tweet.objects.aggregate(Avg('electoral_score')) 
     avg_score = round(avg_score['electoral_score__avg'], 5)
@@ -36,6 +41,11 @@ def index(request):
     'avg_score': avg_score,
     
   })
+def data_analysis(request):
+  last_tweets = Tweet.objects.all().order_by('created_at')[0:10]
+  return render(request, 'main/analise.html',
+    {'tweets': last_tweets             
+      })
 
 def execution(request, status=None):
   running = doesJobExists(COLLECTOR_JOB_NAME)

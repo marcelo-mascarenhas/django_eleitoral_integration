@@ -15,7 +15,7 @@ class User(models.Model):
   
   created_at = models.DateTimeField()
  
- 
+
 class Tweet(models.Model):
   
   tweet_id = models.BigIntegerField(primary_key=True)

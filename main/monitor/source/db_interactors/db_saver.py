@@ -12,7 +12,7 @@ class InformationHandler():
     
     new_tweet = Tweet(tweet_id=tweet['id'], author_id=tweet['author_id'] , text=tweet['text'], created_at=tweet['created_at'], \
                       evaluation_method=method, electoral_score=score, retweet_count=tweet['public_metrics']['retweet_count'], \
-                        reply_count=tweet['public_metrics']['retweet_count'], like_count=tweet['public_metrics']['like_count'], \
+                        reply_count=tweet['public_metrics']['reply_count'], like_count=tweet['public_metrics']['like_count'], \
                           quote_count=tweet['public_metrics']['quote_count'], referenced=True if referenced else False)
     
     print(new_tweet.referenced)
