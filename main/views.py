@@ -13,6 +13,7 @@ from .models import *
 from django.db.models import Avg
 
 from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.core.paginator import Paginator
 
 from integrated.settings import COLLECTOR_JOB_NAME, MAX_INT, ERROR_MSG
 
@@ -41,12 +42,23 @@ def index(request):
     'avg_score': avg_score,
     
   })
-def data_analysis(request):
-  last_tweets = Tweet.objects.all().order_by('created_at')[0:10]
-  return render(request, 'main/analise.html',
-    {'tweets': last_tweets             
-      })
 
+def data_analysis(request, sort_by=None):
+  
+  sort_by = "created_at" if sort_by == None else sort_by
+    
+  tweet_list = Tweet.objects.all().order_by(sort_by).reverse()
+  paginator = Paginator(tweet_list, 10)
+  
+  page_number = request.GET.get('page')
+  page_obj = paginator.get_page(page_number)
+
+  return render(request, 'main/analise.html',
+    {'tweets': page_obj             
+      })
+  
+  
+  
 def execution(request, status=None):
   running = doesJobExists(COLLECTOR_JOB_NAME)
   
@@ -86,6 +98,12 @@ def stopCollector(request):
   return redirect(execution)
 
 class Configuration(FormView):
+  """
+  Stores the methods related to the configuration page. Also contains the class object reponsible
+  for the manipulation of the configuration (JSON) files, located at /monitor/configurations/...
+  
+  """
+  
   template_name = 'main/configuration.html'
   
   config_forms = ConfigurationForm()   

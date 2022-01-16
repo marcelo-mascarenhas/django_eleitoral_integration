@@ -1,23 +1,54 @@
 {%extends 'main/layout.html' %}
 {% load static %}
+{% load mathfilters %}
 
-<link href="{% static 'css/an.css' %}" rel="stylesheet">
+{% block script %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="{% static "js/pagination.js" %}"></script>
+
+{% endblock script %}
+
 
 {% block body%}
+<link href="{% static 'css/an.css' %}" rel="stylesheet">
 
   <h1 class='flex-container3'=>Análise de Dados</h1>
   
   <div class="fx1">
     <div class="flex-left">
-      <h4> Filtros </h4>
-
+      <h4>Filtros</h4>
       <div class="wrap">
         <div class="search">
-           <input type="text" class="searchTerm" placeholder="What are you looking for?">
+          <input type="text" class="searchTerm" placeholder="What are you looking for?">
         </div>
-     </div>
-
-     </div>
+      </div>
+      <hr>
+      <h5>Intervalo de Score</h5>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="slider-range"></div>
+          </div>
+        </div>
+        <div class="row slider-labels">
+          <div class="col-xs-6 caption">
+            <strong>Minimo:</strong> <span id="slider-range-value1"></span>
+          </div>
+          <div class="col-xs-6 text-right caption">
+            <strong>Máximo:</strong> <span id="slider-range-value2"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <form>
+              <input type="hidden" name="min-value" value=""> <input type="hidden" name="max-value" value="">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
     
     
     
@@ -58,6 +89,62 @@
         
       </div>
       {% endfor %}
+
+      <div class="flex-container3">
+        <nav aria-label="...">
+          <ul class="pagination">
+
+            {% if tweets.has_previous %}
+
+              <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo;</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ tweets.previous_page_number }}">Anterior</a>
+              </li>
+              
+              
+              {% if tweets.previous_page_number|sub:1 >= 1 %}
+                <li class="page-item"><a class="page-link" href="?page={{tweets.previous_page_number|sub:1}}"> {{tweets.previous_page_number|sub:1}}</a></li>
+              {% endif %}
+              
+              
+              
+              <li class="page-item"><a class="page-link" href="?page={{tweets.previous_page_number}}">{{tweets.previous_page_number}}</a></li>
+
+
+            {% endif %}
+            
+            <li class="page-item active">
+              <span class="page-link">{{tweets.number}}<span class="sr-only">(current)</span>
+              </span>
+            </li>
+
+
+            {% if tweets.has_next %}
+
+
+              <li class="page-item"><a class="page-link" href="?page={{tweets.next_page_number}}">{{tweets.next_page_number}}</a></li>
+              
+              {% if tweets.next_page_number|add:1 <= tweets.paginator.num_pages %}
+
+                <li class="page-item"><a class="page-link" href="?page={{tweets.next_page_number|add:1}}"> {{tweets.next_page_number|add:1}}</a></li>
+
+              
+              {%endif%}
+
+              <li class="page-item">
+                <a class="page-link" href="?page={{ tweets.next_page_number }}">Próxima</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ tweets.paginator.num_pages }}">&raquo;</a>
+              </li>
+              {%endif%}
+
+
+          </ul>
+        </nav>
+      </div>
     </div>
   
   

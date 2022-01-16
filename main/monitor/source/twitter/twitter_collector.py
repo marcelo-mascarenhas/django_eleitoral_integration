@@ -122,9 +122,14 @@ class TwitterCollector():
     """
     while True:
       try:
+        
         self.__wipe_previous_rules()
+        
         filter_language = 'lang:pt' if self.only_pt else ""
+        
         self.__api[self.curr].request('tweets/search/stream/rules', {'add': [{'value':f'({self.words}) {filter_language}'}]})
+        
+        
         response = TwitterPager(self.__api[self.curr], 'tweets/search/stream',{
             'tweet.fields': TWEET_FIELDS,
             'expansions': EXPANSIONS,

@@ -66,3 +66,4 @@ wrapt==1.12.1
 termcolor==1.1.0
 python-time==0.3.0
 django==3.2.9
+django-mathfilters==1.0.0

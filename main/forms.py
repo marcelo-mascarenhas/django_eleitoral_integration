@@ -3,6 +3,9 @@ from .utils import FileHandler
 from .monitor.source.identificacao.identificacao import METODOS_POSSIVEIS
 
 def calculatePossible(listinha):
+  """
+  Calculate all ML methods that can be used in the retrieval of twitter data. 
+  """
   nds = []
   for item in listinha:
     nds.append((item, item.capitalize()))
