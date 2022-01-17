@@ -15,7 +15,7 @@ class InformationHandler():
                         reply_count=tweet['public_metrics']['reply_count'], like_count=tweet['public_metrics']['like_count'], \
                           quote_count=tweet['public_metrics']['quote_count'], referenced=True if referenced else False)
     
-    print(new_tweet.referenced)
+    print(new_tweet.reply_count, new_tweet.like_count, new_tweet.retweet_count)
     
     new_tweet.save()
         

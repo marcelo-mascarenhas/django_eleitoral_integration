@@ -1,5 +1,3 @@
-// Requires jQuery
-
 // Initialize slider:
 $(document).ready(function() {
   $('.noUi-handle').on('click', function() {
@@ -7,8 +5,7 @@ $(document).ready(function() {
   });
   var rangeSlider = document.getElementById('slider-range');
   var moneyFormat = wNumb({
-    decimals: 2,
-    thousand: ',',
+    decimals: 2
   });
 
   noUiSlider.create(rangeSlider, {
@@ -1976,3 +1973,17 @@ $(document).ready(function() {
     /** @export */
   window.wNumb = wNumb;
 }());
+
+
+$( function(){
+  $( ".datepicker" ).datepicker({
+    dateFormat: 'dd/mm/yy',
+    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+    nextText: 'Proximo',
+    prevText: 'Anterior'
+});
+});

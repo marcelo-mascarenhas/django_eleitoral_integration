@@ -93,3 +93,5 @@ class FileHandler():
       json.dump(file_information, f, indent=7, ensure_ascii=False)  
       f.flush()
       f.close()
+      
+    

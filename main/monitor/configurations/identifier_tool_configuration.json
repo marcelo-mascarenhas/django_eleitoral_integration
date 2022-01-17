@@ -32,5 +32,5 @@
               "caminho_arquivo_npy": "cnn/v1/cnn_model.npy",
               "versao": "1.0"
        },
-       "metodo_selecionado": "cnn"
+       "metodo_selecionado": "naive_bayes"
 }

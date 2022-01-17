@@ -4,7 +4,7 @@ import django_rq
 import json
 import time
 
-from .forms import ConfigurationForm
+from .forms import *
 
 from django.views.generic.edit import FormView
 
@@ -44,19 +44,44 @@ def index(request):
   })
 
 def data_analysis(request, sort_by=None):
+  search = ""
   
-  sort_by = "created_at" if sort_by == None else sort_by
+  min_score = 0
+  
+  max_score = 1
+  
+  min_date = request.POST.get('min_value')
+  
+  max_date = request.POST.get('min_value')
+  
+  
+  if request.method == "POST":
+    
+    search = request.POST.get('search_bar')
+    
+    min_score = request.POST.get('min_value')
+    
+    max_score = request.POST.get('max_value')
+    
+    min_date = request.POST.get('min_value')
+    
+    max_date = request.POST.get('min_value')
+    
+  filter_by = OrderBy()
+  sort_by = "like_count" if sort_by == None else sort_by
     
   tweet_list = Tweet.objects.all().order_by(sort_by).reverse()
+  
   paginator = Paginator(tweet_list, 10)
   
   page_number = request.GET.get('page')
+  
   page_obj = paginator.get_page(page_number)
 
   return render(request, 'main/analise.html',
-    {'tweets': page_obj             
-      })
-  
+    {'tweets': page_obj,
+     'filtros': filter_by            
+    })
   
   
 def execution(request, status=None):
