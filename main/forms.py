@@ -27,8 +27,11 @@ class OrderBy(forms.Form):
     ('like_count', 'Quantidade de Curtidas'),
     ('retweet_count', 'Quantidade de Retweets'),
     ('reply_count', 'Quantidade de Respostas'),
-    ('score', 'Score'),
+    ('electoral_score', 'Score'),
   )
   mtd = forms.CharField(label='Ordenar por:', \
     widget=forms.Select(choices=MY_CHOICES))
+
+  score_min = forms.FloatField()
   
+  score_max = forms.FloatField()

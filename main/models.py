@@ -50,3 +50,4 @@ class ExecutionHandler(models.Model):
   process_id = models.PositiveIntegerField(primary_key=True)
   
   continue_run = models.BooleanField()
+  

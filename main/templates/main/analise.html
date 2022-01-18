@@ -14,6 +14,8 @@
 
   <link href="{% static 'css/analysis.css' %}" rel="stylesheet">
   <script src="{% static "js/pagination.js" %}"></script>
+  <script src="{% static "js/configuration.js" %}"></script>
+
 
 {% endblock script %}
 
@@ -24,14 +26,22 @@
   
 <div class="fx1">
   <div class="flex-left noselect">
-    <form action="{% url 'analise' %}" method="post" name="myForm">
+    <script type="text/javascript">
+      var min_score = {{min_score}}
+      var max_score = {{max_score}}
+    </script>
+    <form action="{% url 'analise' %}" method="GET" name="myForm" onsubmit="placeScores()">
       {% csrf_token %}
+
+      {{filtros.score_min.as_hidden}}
+      {{filtros.score_max.as_hidden}}
+
       <h4>Filtros</h4>
       <hr>
       <h5>Barra de Busca</h5>
       <div class="wrap divisorias">
         <div class="search">
-          <input type="text" class="searchTerm" placeholder="" name="search_bar">
+          <input type="text" class="searchTerm" name="search_bar" value="{{search}}">
         </div>
       </div>
       <h5>Intervalo de Score</h5>
@@ -43,25 +53,30 @@
         </div>
         <div class="row slider-labels">
           <div class="col-xs-6 caption">
-            <strong>Minimo:</strong> <span id="slider-range-value1"></span>
+            <strong>Minimo:</strong><span id="slider-range-value1"></span>
           </div>
           <div class="col-xs-6 text-right caption">
-            <strong>Máximo:</strong> <span id="slider-range-value2"></span>
+            <strong>Máximo:</strong><span id="slider-range-value2"></span>
+
           </div>
         </div>
         <div class="row">
           <div class="col-sm-12">
-            <input type="hidden" name="min-value" value=""> <input type="hidden" name="max-value" >
+            <input type="hidden" name="min_value" value=""> 
+            <input type="hidden" name="max_value" value="">
           </div>
         </div>
       </div>
       <div class="fx1 container divisorias">
-        <p class="paddingRight">Data Mínima <input type="text" aria-label="Data Min" class="form-control datepicker" name="data_min"></p>
-        <p>Data Máxima <input type="text" aria-label="Data Max" class="form-control datepicker" aria-describedby="inputGroup-sizing-sm" name="data_max"></p>
+        <p class="paddingRight">Data Mínima <input type="text" aria-label="Data Min" class="form-control datepicker" name="data_min" value="{{data_min}}"></p>
+        <p>Data Máxima <input type="text" aria-label="Data Max" class="form-control datepicker" aria-describedby="inputGroup-sizing-sm" name="data_max" value="{{data_max}}"></p>
       </div>
       <div class="flex-container3">
-        {{filtros}}
+        {{filtros.mtd}}
       </div>
+      <script> let new_data = "{{ sort_by }}";
+        selectRightOption(new_data)</script>
+
       <div class="resetandfilt">
         <button type="submit" class="btn btn-primary">Filtrar</button>
       </div>
@@ -107,46 +122,60 @@
         </div>
       </div>
     {% endfor %}
+{% if not empty_query %}
     <div class="flex-container3">
       <nav aria-label="...">
         <ul class="pagination">
-          {% if tweets.has_previous %}
+        
+        {% if tweets.has_previous %}
             <li class="page-item">
               <a class="page-link" href="?page=1">&laquo;</a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="?page={{tweets.previous_page_number}}">Anterior</a>
+              <a class="page-link" href="?page={{tweets.previous_page_number}}&{{ parameters }}">Anterior</a>
             </li>
+            
             {% if tweets.previous_page_number|sub:1 >= 1 %}
               <li class="page-item">
-                <a class="page-link" href="?page={{tweets.previous_page_number|sub:1}}">{{tweets.previous_page_number|sub:1}}</a>
+                <a class="page-link" href="?page={{tweets.previous_page_number|sub:1}}&{{ parameters }}">{{tweets.previous_page_number|sub:1}}</a>
               </li>
             {% endif %}
+
             <li class="page-item">
-              <a class="page-link" href="?page={{tweets.previous_page_number}}">{{tweets.previous_page_number}}</a>
+              <a class="page-link" href="?page={{tweets.previous_page_number}}&{{ parameters }}">{{tweets.previous_page_number}}</a>
             </li>
-          {% endif %}
-          <li class="page-item active"><span class="page-link">{{tweets.number}}<span class="sr-only">(current)</span></span></li>{% if tweets.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{tweets.next_page_number}}">{{tweets.next_page_number}}</a>
-          </li>
+          {% endif %}  
+
+          <li class="page-item active"><span class="page-link">{{tweets.number}}<span class="sr-only">(current)</span></span></li>
+          
+          {% if tweets.has_next %}
+
+            <li class="page-item">
+              <a class="page-link" href="?page={{tweets.next_page_number}}&{{ parameters }}">{{tweets.next_page_number}}</a>
+            </li>
           
           {% if tweets.next_page_number|add:1 <= tweets.paginator.num_pages %}
             <li class="page-item">
-              <a class="page-link" href="?page={{tweets.next_page_number|add:1}}">{{tweets.next_page_number|add:1}}</a>
+              <a class="page-link" href="?page={{tweets.next_page_number|add:1}}&{{ parameters }}">{{tweets.next_page_number|add:1}}</a>
             </li>
           
           {%endif%}
-          <li class="page-item">
-            <a class="page-link" href="?page={{tweets.next_page_number}}">Próxima</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="?page={{tweets.paginator.num_pages}}">&raquo;</a>
-          </li>
+            
+            <li class="page-item">
+              <a class="page-link" href="?page={{tweets.next_page_number}}&{{ parameters }}">Próxima</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{tweets.paginator.num_pages}}&{{ parameters }}">&raquo;</a>
+            </li>
+          
           {%endif%}
+
+
         </ul>
       </nav>
     </div>
+  {% endif %}
+
   </div>
 </div>
 

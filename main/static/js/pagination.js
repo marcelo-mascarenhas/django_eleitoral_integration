@@ -1,15 +1,18 @@
 // Initialize slider:
+
+
 $(document).ready(function() {
   $('.noUi-handle').on('click', function() {
     $(this).width(50);
   });
   var rangeSlider = document.getElementById('slider-range');
+  console.log(rangeSlider)
   var moneyFormat = wNumb({
     decimals: 2
   });
 
   noUiSlider.create(rangeSlider, {
-    start: [0, 1.0],
+    start: [min_score, max_score],
     step: 0.01,
     range: {
       'min': [0],
@@ -23,11 +26,11 @@ $(document).ready(function() {
   rangeSlider.noUiSlider.on('update', function(values, handle) {
     document.getElementById('slider-range-value1').innerHTML = values[0];
     document.getElementById('slider-range-value2').innerHTML = values[1];
-    document.getElementsByName('min-value').value = moneyFormat.from(
+    document.getElementsByName('min_value').value = moneyFormat.from(
       values[0]);
-    document.getElementsByName('max-value').value = moneyFormat.from(
+    document.getElementsByName('max_value').value = moneyFormat.from(
       values[1]);
-  });
+    });
 });
 
 
@@ -1987,3 +1990,10 @@ $( function(){
     prevText: 'Anterior'
 });
 });
+
+
+function placeScores(){
+  document.getElementById('id_score_min').value =  document.getElementById('slider-range-value1').innerHTML
+  document.getElementById('id_score_max').value =  document.getElementById('slider-range-value2').innerHTML
+
+};

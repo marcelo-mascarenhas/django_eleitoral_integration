@@ -1,7 +1,11 @@
+from pydoc import text
 import django_rq
 import json
+import datetime
 
-from .models import ExecutionHandler, MachineLearningMethod
+
+from .models import ExecutionHandler, MachineLearningMethod, Tweet
+
 from integrated.settings import COLLECTOR_JOB_ID, CONFIGURATION_PATH, TWITTER_FILE_NAME, ELECT_FILE_NAME
 from .monitor.source.identificacao.identificacao import METODOS_POSSIVEIS
 
@@ -19,6 +23,7 @@ def getJob(job_name):
   return job
 
 
+  
 def executionObjectSetter(run=True):
   """
   Set ExecutionHandler object to True or false, to control the flow of execution.
@@ -40,6 +45,43 @@ def createMachineLearningMethods():
       obj = MachineLearningMethod(method=name)
       obj.save()
 
+class FilterHandler():
+  
+  def create_filter_attributes(self, request):
+    """
+    Create all fields that will be used in the filter.
+    
+    """
+    
+    filters = {}
+    
+    filters['search_bar'] = request.GET.get('search_bar') if request.GET.get('search_bar') != None else ""
+    
+    filters['max_date'] = request.GET.get('data_max') if request.GET.get('data_max') != None else ""
+    
+    filters['min_date'] = request.GET.get('data_min') if request.GET.get('data_min') != None else ""  
+    
+    filters['min_score'] = request.GET.get('score_min') if request.GET.get('min_value') != None else 0
+    
+    filters['max_score'] = request.GET.get('score_max') if request.GET.get('max_value') != None else 1
+    
+    filters['sort_by'] = request.GET.get('mtd') if request.GET.get('mtd') != None else "created_at"
+    
+    return filters
+
+  def getFilteredTwitterList(self, filters):
+    twitter_list = Tweet.objects.all().order_by(filters['sort_by']).reverse()
+    
+    #Nested filtering.
+    if filters['search_bar'] != "":
+      twitter_list = twitter_list.filter(text__icontains=filters['search_bar'])
+    
+    twitter_list = twitter_list.filter(electoral_score__range=[filters['min_score'], filters['max_score']])
+    
+    empty_query = True if len(twitter_list) == 0 else False
+
+    return twitter_list, empty_query
+    
 
 class FileHandler():
   

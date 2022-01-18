@@ -1,3 +1,4 @@
+from itertools import count
 from django.urls import path, include
 
 from . import views
@@ -10,5 +11,5 @@ urlpatterns = [
   path('django-rq/', include('django_rq.urls')),
   path("execucao/stop_collector/", views.stopCollector, name="stopCollector"),
   path("configuration", views.Configuration.as_view(), name="configuration"),
-  path("analise", views.data_analysis, name="analise"),
+  path("analise", views.DataAnalysis.as_view(), name="analise"),  
 ]

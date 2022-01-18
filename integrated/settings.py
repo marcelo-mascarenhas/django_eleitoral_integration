@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     "django_rq",
-    "mathfilters"
+    "mathfilters",
 ]
 
 MIDDLEWARE = [
@@ -148,6 +148,8 @@ RQ_SHOW_ADMIN_LINK = True
 COLLECTOR_JOB_NAME = 'collector'
 
 COLLECTOR_JOB_ID = 1
+
+FILTER_ID = 1
 
 MAX_INT = 100000000
 

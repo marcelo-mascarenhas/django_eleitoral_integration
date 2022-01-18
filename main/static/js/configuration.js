@@ -64,4 +64,5 @@ function getTranslatedJson(data_json, en_to_pt = true){
 
 function selectRightOption(data){
   document.getElementById('id_mtd').value = data;
+  
 }

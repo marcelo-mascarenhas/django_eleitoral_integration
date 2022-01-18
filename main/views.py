@@ -1,4 +1,5 @@
 from pickle import NONE
+from warnings import filters
 from django.views.generic.base import View
 import django_rq
 import json
@@ -42,46 +43,6 @@ def index(request):
     'avg_score': avg_score,
     
   })
-
-def data_analysis(request, sort_by=None):
-  search = ""
-  
-  min_score = 0
-  
-  max_score = 1
-  
-  min_date = request.POST.get('min_value')
-  
-  max_date = request.POST.get('min_value')
-  
-  
-  if request.method == "POST":
-    
-    search = request.POST.get('search_bar')
-    
-    min_score = request.POST.get('min_value')
-    
-    max_score = request.POST.get('max_value')
-    
-    min_date = request.POST.get('min_value')
-    
-    max_date = request.POST.get('min_value')
-    
-  filter_by = OrderBy()
-  sort_by = "like_count" if sort_by == None else sort_by
-    
-  tweet_list = Tweet.objects.all().order_by(sort_by).reverse()
-  
-  paginator = Paginator(tweet_list, 10)
-  
-  page_number = request.GET.get('page')
-  
-  page_obj = paginator.get_page(page_number)
-
-  return render(request, 'main/analise.html',
-    {'tweets': page_obj,
-     'filtros': filter_by            
-    })
   
   
 def execution(request, status=None):
@@ -135,7 +96,7 @@ class Configuration(FormView):
   
   fih = FileHandler()
   
-  def get(self, request, error_msg=None):    
+  def get(self, request, error_msg=None):
     file_information = self.fih.getTwitterConfigurationFile()
     selected = self.fih.selectedMlMethod()
 
@@ -169,3 +130,42 @@ class Configuration(FormView):
     
     else:
       return HttpResponseRedirect("Ooooops... Something went wrong.")
+
+
+
+class DataAnalysis(FormView):
+  
+  path = 'main/analise.html'
+  
+  filter_by = OrderBy()
+  
+  filt_obj = FilterHandler()
+  
+  def get(self, request):
+    
+    get_copy = request.GET.copy()
+    parameters = get_copy.pop('page', True) and get_copy.urlencode()
+  
+    filters = self.filt_obj.create_filter_attributes(request)
+    
+    tweet_list, empty_query = self.filt_obj.getFilteredTwitterList(filters)
+
+    paginator = Paginator(tweet_list, 10)
+    
+    page_number = request.GET.get('page')
+    
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, self.path,
+      {'tweets': page_obj,
+     'filtros': self.filter_by,
+     'search': filters['search_bar'],
+     'data_max': filters['max_date'],
+     'data_min': filters['min_date'],
+     'min_score': filters['min_score'],
+     'max_score': filters['max_score'],
+     'sort_by': filters['sort_by'],
+     'parameters': parameters,
+     'empty_query': empty_query
+    })
+  
