@@ -94,9 +94,7 @@ class FilterHandler():
     twitter_list = twitter_list.filter(electoral_score__range=[filters['min_score'], filters['max_score']])
     
     
-    empty_query = True if len(twitter_list) == 0 else False
-
-    return twitter_list, empty_query
+    return twitter_list
     
 
 class FileHandler():

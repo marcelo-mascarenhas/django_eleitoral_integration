@@ -4,13 +4,12 @@ import time
 from .forms import *
 from .models import *
 from django.views.generic.edit import FormView
-
-from .models import *
-
 from django.db.models import Avg
-
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.core.paginator import Paginator
+from django.db.models.functions import Concat
+from django.db.models import F
+from .plots.wordCloud import generateWordCloud
 
 from integrated.settings import COLLECTOR_JOB_NAME, MAX_INT, ERROR_MSG
 
@@ -138,20 +137,15 @@ class DataAnalysis(FormView):
   filt_obj = FilterHandler()
   
   def get(self, request):
-    
-    get_copy = request.GET.copy()
-    parameters = get_copy.pop('page', True) and get_copy.urlencode()
-  
-    filters = self.filt_obj.create_filter_attributes(request)
-    
-    tweet_list, empty_query = self.filt_obj.getFilteredTwitterList(filters)
+    parameters, filters, tweet_list = self.__getParameters(request)
 
+    empty_query = True if tweet_list.count() == 0 else False
+    
     paginator = Paginator(tweet_list, 10)
     
     page_number = request.GET.get('page')
     
     page_obj = paginator.get_page(page_number)
-    
     return render(request, self.path,
       {'tweets': page_obj,
      'filtros': self.filter_by,
@@ -165,3 +159,36 @@ class DataAnalysis(FormView):
      'empty_query': empty_query
     })
   
+  def __getParameters(self, request):
+    get_copy = request.GET.copy()
+    parameters = get_copy.pop('page', True) and get_copy.urlencode()
+    filters = self.filt_obj.create_filter_attributes(request)
+    
+    tweet_list = self.filt_obj.getFilteredTwitterList(filters)
+
+  
+    return parameters, filters, tweet_list
+  
+
+
+class GraphPlots(DataAnalysis):
+  
+  path = "main/graph_plot.html"
+  plot_type = ""
+  
+  def get(self, request):
+    parameters, filters, tweet_list = self._DataAnalysis__getParameters(request)
+    image = None
+    
+    print(self.plot_type)
+    print(filters)
+    
+    if self.plot_type == "cloudWord":
+      
+      text = tweet_list.values_list("text", flat=True)
+      final_text = ''.join(text).replace('de|RT|e|https|HTTPS|Https', '')
+      
+      image = generateWordCloud(final_text)
+      
+  
+    return render(request, self.path, {'imagem': image})

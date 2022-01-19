@@ -10,5 +10,6 @@ urlpatterns = [
   path('django-rq/', include('django_rq.urls')),
   path("execucao/stop_collector/", views.stopCollector, name="stopCollector"),
   path("configuration", views.Configuration.as_view(), name="configuration"),
-  path("analise", views.DataAnalysis.as_view(), name="analise"),  
+  path("analise", views.DataAnalysis.as_view(), name="analise"), 
+  path(r"analise/plot?*", views.GraphPlots.as_view(plot_type="cloudWord"), name="plotWC") 
 ]
