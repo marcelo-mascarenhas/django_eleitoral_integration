@@ -1,12 +1,8 @@
-from pickle import NONE
-from warnings import filters
-from django.views.generic.base import View
 import django_rq
-import json
 import time
 
 from .forms import *
-
+from .models import *
 from django.views.generic.edit import FormView
 
 from .models import *
@@ -31,7 +27,7 @@ def index(request):
   createMachineLearningMethods()
   
   tt = Tweet.objects.count()
-  avg_score = NONE
+  avg_score = None
   try:
     avg_score = Tweet.objects.aggregate(Avg('electoral_score')) 
     avg_score = round(avg_score['electoral_score__avg'], 5)

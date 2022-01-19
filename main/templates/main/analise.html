@@ -72,16 +72,22 @@
         <p>Data Máxima <input type="text" aria-label="Data Max" class="form-control datepicker" aria-describedby="inputGroup-sizing-sm" name="data_max" value="{{data_max}}"></p>
       </div>
       <div class="flex-container3">
-        {{filtros.mtd}}
+        {{filtros.mtd.label_tag}} {{filtros.mtd}}
       </div>
       <script> let new_data = "{{ sort_by }}";
         selectRightOption(new_data)</script>
 
-      <div class="resetandfilt">
+      <div class="resetandfilt divisorias">
+        <button type="" class="btn btn-primary">Resetar</button>
         <button type="submit" class="btn btn-primary">Filtrar</button>
+
       </div>
     </form>
     <hr>
+    <h4>Estruturas</h4>
+    <button type="submit" class="btn btn-primary">Gerar Nuvem de Palavras</button>
+
+
   </div>
 
   <div class="flex-right">
@@ -129,7 +135,7 @@
         
         {% if tweets.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="?page=1">&laquo;</a>
+              <a class="page-link" href="?page=1&{{ parameters }}">&laquo;</a>
             </li>
             <li class="page-item">
               <a class="page-link" href="?page={{tweets.previous_page_number}}&{{ parameters }}">Anterior</a>

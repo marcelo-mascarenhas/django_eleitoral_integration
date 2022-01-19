@@ -1,4 +1,3 @@
-from pydoc import text
 import django_rq
 import json
 import datetime
@@ -49,7 +48,7 @@ class FilterHandler():
   
   def create_filter_attributes(self, request):
     """
-    Create all fields that will be used in the filter.
+    Create all fields that will be used in the filter variable.
     
     """
     
@@ -65,18 +64,35 @@ class FilterHandler():
     
     filters['max_score'] = request.GET.get('score_max') if request.GET.get('max_value') != None else 1
     
-    filters['sort_by'] = request.GET.get('mtd') if request.GET.get('mtd') != None else "created_at"
+    filters['sort_by'] = request.GET.get('mtd') if request.GET.get('mtd') != None else "electoral_score"
     
     return filters
 
   def getFilteredTwitterList(self, filters):
+    """
+    Aplica todos os filtros nos Tweet objects, considerando os valores dos filtros passados.
+    
+    """
+    
     twitter_list = Tweet.objects.all().order_by(filters['sort_by']).reverse()
     
     #Nested filtering.
     if filters['search_bar'] != "":
       twitter_list = twitter_list.filter(text__icontains=filters['search_bar'])
     
+    if filters['max_date'] != "" and filters['min_date'] != "":
+      
+      inferior_range = [int(x) for x in filters['min_date'].split('/')]
+      
+      superior_range = [int(x) for x in filters['max_date'].split('/')]
+      #Format the data DD/MM/YYYY to YYYY/MM/DD
+      twitter_list = twitter_list.filter(
+        created_at__range=[datetime.date(inferior_range[2], inferior_range[1], inferior_range[0]), 
+          datetime.date(superior_range[2], superior_range[1], superior_range[0])])
+    
+    
     twitter_list = twitter_list.filter(electoral_score__range=[filters['min_score'], filters['max_score']])
+    
     
     empty_query = True if len(twitter_list) == 0 else False
 
