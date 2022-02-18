@@ -2,6 +2,7 @@ import django_rq
 import json
 import datetime
 
+import shutil
 
 from .models import ExecutionHandler, MachineLearningMethod, Tweet
 
@@ -96,6 +97,11 @@ class FilterHandler():
     
     return twitter_list
     
+
+def move_file(base, destination):
+  shutil.move(base, destination)
+
+
 
 class FileHandler():
   

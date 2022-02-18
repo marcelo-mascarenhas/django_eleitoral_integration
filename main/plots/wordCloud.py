@@ -1,18 +1,16 @@
-import numpy as np
-import pandas as pd
-from os import path
-from PIL import Image
 import io
 import base64
 import urllib
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+from wordcloud import WordCloud, STOPWORDS
 
 import matplotlib.pyplot as plt
 
 
 def generateWordCloud(text_corpus):
+
   #Generate the wordCloud
-  wordcloud = WordCloud(width=1920, height=960,).generate(text_corpus)
+  wordcloud = WordCloud(width=1920, height=960, collocations = False,
+                          stopwords=STOPWORDS).generate(text_corpus)
   #Adjust figure
   plt.figure(figsize=(20,10))
   plt.imshow(wordcloud,interpolation= 'bilinear')

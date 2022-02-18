@@ -34,7 +34,7 @@
           <div class="flex-auto p-4">
             <div class="flex flex-wrap">
               <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                <h5 class="text-blueGray-400 uppercase font-bold text-xs">DDDDDD</h5><span class="font-semibold text-xl text-blueGray-700">DDDD</span>
+                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Tweets coletados na última semana</h5><span class="font-semibold text-xl text-blueGray-700">4230</span>
               </div>
             </div>
           </div>
@@ -61,8 +61,8 @@
         <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full max-w-full flex-grow flex-1">
-              <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">GFDGFDGFD</h6>
-              <h2 class="text-white text-xl font-semibold">GFDGFFSA</h2>
+              <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">últimos tweets coletados com maior score eleitoral</h6>
+              <h2 class="text-white text-xl font-semibold"></h2>
             </div>
           </div>
         </div>
@@ -76,7 +76,18 @@
                 <div class=""></div>
               </div>
             </div>
-            <canvas id="line-chart" style="display: block; height: 350px; width: 798px;" width="1758" height="771" class="chartjs-render-monitor"></canvas>
+            <div id="line-chart" style="display: block; height: 350px; width: 798px;" width="1758" height="771" class="chartjs-render-monitor">
+              {% for item in tweets %}
+              <div class="box-layout">
+                <div class="flex-columnxd">
+                  <div>User ID: {{item.author_id}}</div>   
+                  <div>Score: {{item.electoral_score}}</div>                    
+                </div>
+              <div>{{item.text}}</div>
+
+                </div>
+              {% endfor %}
+            </div>
           </div>
         </div>
       </div>
@@ -86,8 +97,7 @@
         <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full max-w-full flex-grow flex-1">
-              <h6 class="uppercase text-blueGray-400 mb-1 text-xs font-semibold">XXXXXXX</h6>
-              <h2 class="text-blueGray-700 text-xl font-semibold">XXXXX</h2>
+              <h6 class="uppercase text-blueGray-400 mb-1 text-xs font-semibold">Últimos tweets coletados com maior score</h6>
             </div>
           </div>
         </div>
@@ -101,7 +111,8 @@
                 <div class=""></div>
               </div>
             </div>
-            <canvas id="bar-chart" style="display: block; height: 350px; width: 798px;" width="1758" height="771" class="chartjs-render-monitor"></canvas>
+            <div id="bar-chart" style="display: block; height: 350px; width: 798px;" width="1758" height="771" class="chartjs-render-monitor">
+            </div>
           </div>
         </div>
       </div>

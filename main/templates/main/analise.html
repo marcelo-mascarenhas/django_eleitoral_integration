@@ -30,7 +30,7 @@
       var min_score = {{min_score}}
       var max_score = {{max_score}}
     </script>
-    <form action="{% url 'analise' %}" method="GET" name="myForm" onsubmit="placeScores()">
+    <form action="{% url 'analise' %}" method="GET" name="myForm" onsubmit="placeScores()" autocomplete="off">
       {% csrf_token %}
 
       {{filtros.score_min.as_hidden}}
@@ -83,9 +83,10 @@
 
       </div>
     </form>
-    <hr>
     <h4>Estruturas</h4>
     <a class="btn btn-primary" href="{% url 'plotWC' %}?{{parameters | safe}}" target="blank">Gerar Nuvem de Palavras</a>
+    
+    <a class="btn btn-primary" style="margin-top:10px;"href="{% url 'plotCO' %}?{{parameters | safe}}" target="blank">Gerar Grafo de Co-ocorrência</a>
 
   </div>
 
@@ -95,7 +96,7 @@
       <div class="tweet-wrap">
         <div class="tweet-header">
           <div class="tweet-header-info">
-            <span>Tweet ID: {{tweet.tweet_id}}</span> <span>User ID:{{tweet.author_id}}</span> <span>{{tweet.created_at}}</span>
+            <span>Tweet ID: {{tweet.tweet_id}}</span> <span>{{tweet.created_at}}</span>
             <p>{{tweet.text}}</p><span><strong>Score: {{tweet.electoral_score}}</strong></span>
           </div>
         </div>

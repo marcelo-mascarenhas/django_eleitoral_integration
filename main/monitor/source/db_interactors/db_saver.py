@@ -1,5 +1,5 @@
 from main.models import Tweet, User
-
+import re
 class InformationHandler():
   """Class that store the methods to save information in the database"""
   
@@ -9,14 +9,14 @@ class InformationHandler():
     score = tweet['score'] if 'score' in tweet else ""
   
     new_tweet = None
+    tweet['text'] = self.remove_users(tweet['text'])
+    print(tweet['text'])
     
     new_tweet = Tweet(tweet_id=tweet['id'], author_id=tweet['author_id'] , text=tweet['text'], created_at=tweet['created_at'], \
                       evaluation_method=method, electoral_score=score, retweet_count=tweet['public_metrics']['retweet_count'], \
                         reply_count=tweet['public_metrics']['reply_count'], like_count=tweet['public_metrics']['like_count'], \
                           quote_count=tweet['public_metrics']['quote_count'], referenced=True if referenced else False)
-    
-    print(new_tweet.reply_count, new_tweet.like_count, new_tweet.retweet_count)
-    
+        
     new_tweet.save()
         
   def __saveUser(self, tweet):
@@ -27,9 +27,17 @@ class InformationHandler():
           created_at=tweet['created_at'])
       
       new_user.save()
-      
+
 
   def saveInformation(self, information, referenced=False):
     #__saveUser()
     self.__saveTweets(information, referenced=referenced)
     
+    
+  def remove_users(self, text_msg):
+    #Find all users
+    pattern = "@[a-zA-Z0-9_]+"
+    
+    text_msg = re.sub(pattern, "", text_msg)
+    
+    return text_msg

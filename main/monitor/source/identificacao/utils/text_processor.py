@@ -10,6 +10,8 @@ import gensim
 import re
 from unicodedata import normalize
 import matplotlib
+from nltk import bigrams
+
 matplotlib.use("agg")
 
 
@@ -69,7 +71,20 @@ class TextProcessor:
 
     def remover_acentos(self, txt):
         return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
-
+    
+    def construct_bigrams(self, tokenized_plot):
+        """
+        Receives a list of str lists.
+        
+        Construct bigrams(two words terms), conservating the meaning of some sentences.
+        Ex: The bigram 'United States' is much more meaningful than the two unigrams 'United' and 'States'.
+        The same follows for inumerous terms.
+        
+        Returns the tokenized plot with bigrams.
+        """
+        
+        return [list(bigrams(tweet)) for tweet in tokenized_plot]
+    
     def text_process(self,
                      doc_set,
                      stem=False,

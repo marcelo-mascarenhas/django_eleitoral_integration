@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+HTML_PATH = os.path.join(BASE_DIR, 'main/templates/main/cooccurr.html')
 CONFIGURATION_PATH = os.path.join(BASE_DIR, 'main/monitor/configurations/')
 MODEL_FILES_PATH = os.path.join(BASE_DIR, 'main/monitor/model_files/')
 
@@ -154,4 +154,3 @@ FILTER_ID = 1
 MAX_INT = 100000000
 
 ERROR_MSG = 'SystemExit: None'
-

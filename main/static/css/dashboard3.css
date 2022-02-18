@@ -498,3 +498,24 @@ html, body {
 
   overflow-x: hidden !important;
 }
+
+
+.box-layout{
+  background-color: grey;
+  color: azure;
+  width: 117vh;
+  height: 9.8vh;
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-size: 2vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-columnxd{
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5vh;
+  color: #fff;
+}

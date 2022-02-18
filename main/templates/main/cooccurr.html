@@ -1,0 +1,227 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 100%;
+            background-color: #222222;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height: 100%;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+        #config {
+            float: left;
+            width: 400px;
+            height: 600px;
+        }
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<div id = "config"></div>
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"font": {"color": "white"}, "fontSize": 26, "id": "contra", "label": "contra", "shape": "dot", "size": 26}, {"font": {"color": "white"}, "fontSize": 54, "id": "covid", "label": "covid", "shape": "dot", "size": 54}, {"font": {"color": "white"}, "fontSize": 11, "id": "queiroga", "label": "queiroga", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "fontSize": 14, "id": "mentiroso", "label": "mentiroso", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "fontSize": 12, "id": "antes", "label": "antes", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "fontSize": 12, "id": "virar", "label": "virar", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "fontSize": 14, "id": "ministro", "label": "ministro", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "fontSize": 12, "id": "02/02", "label": "02/02", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "fontSize": 12, "id": "dizia", "label": "dizia", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "fontSize": 12, "id": "claramente", "label": "claramente", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "fontSize": 12, "id": "ter", "label": "ter", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "fontSize": 12, "id": "tratamento", "label": "tratamento", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "fontSize": 14, "id": "eficaz", "label": "eficaz", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "fontSize": 18, "id": "casos", "label": "casos", "shape": "dot", "size": 18}, {"font": {"color": "white"}, "fontSize": 5, "id": "@desmentindobozo", "label": "@desmentindobozo", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "fontSize": 29, "id": "bolsonaro", "label": "bolsonaro", "shape": "dot", "size": 29}, {"font": {"color": "white"}, "fontSize": 10, "id": "guedes", "label": "guedes", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "fontSize": 10, "id": "pedem", "label": "pedem", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "fontSize": 10, "id": "servidores", "label": "servidores", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "fontSize": 10, "id": "explodem", "label": "explodem", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "fontSize": 10, "id": "cantora", "label": "cantora", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "fontSize": 10, "id": "contamina", "label": "contamina", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "fontSize": 10, "id": "proposito", "label": "proposito", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "fontSize": 9, "id": "morre", "label": "morre", "shape": "dot", "size": 9}, {"font": {"color": "white"}, "fontSize": 8, "id": "lutando", "label": "lutando", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "sic", "label": "sic", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 10, "id": "aqui", "label": "aqui", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "fontSize": 8, "id": "portugal", "label": "portugal", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "equivale", "label": "equivale", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "folha", "label": "folha", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 14, "id": "brasil", "label": "brasil", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "fontSize": 8, "id": "dizendo", "label": "dizendo", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "crianca", "label": "crianca", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "anos", "label": "anos", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "falecida", "label": "falecida", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "semana", "label": "semana", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "dose", "label": "dose", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 16, "id": "vacina", "label": "vacina", "shape": "dot", "size": 16}, {"font": {"color": "white"}, "fontSize": 8, "id": "morreu", "label": "morreu", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "engasgamento", "label": "engasgamento", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "comida", "label": "comida", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "objeto", "label": "objeto", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "efeitos", "label": "efeitos", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 8, "id": "colaterais", "label": "colaterais", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 4, "id": "@metropoles", "label": "@metropoles", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "newslet", "label": "newslet", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 6, "id": "media", "label": "media", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "fontSize": 8, "id": "dia", "label": "dia", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 3, "id": "esquerda", "label": "esquerda", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "fontSize": 4, "id": "festa", "label": "festa", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "avante", "label": "avante", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "setembro", "label": "setembro", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "2021", "label": "2021", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "350", "label": "350", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "direita", "label": "direita", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "arruada", "label": "arruada", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "psd", "label": "psd", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "rui", "label": "rui", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "rio", "label": "rio", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 3, "id": "ontem", "label": "ontem", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "fontSize": 7, "id": "gente", "label": "gente", "shape": "dot", "size": 7}, {"font": {"color": "white"}, "fontSize": 6, "id": "forte", "label": "forte", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "fontSize": 6, "id": "mundo", "label": "mundo", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "fontSize": 4, "id": "inteiro", "label": "inteiro", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "minions", "label": "minions", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 4, "id": "conselho", "label": "conselho", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 8, "id": "fez", "label": "fez", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 3, "id": "positivo", "label": "positivo", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "fontSize": 4, "id": "registra", "label": "registra", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 3, "id": "recorde", "label": "recorde", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "fontSize": 2, "id": "lisboa", "label": "lisboa", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "000", "label": "000", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 1, "id": "@slpng_giants_pt", "label": "@slpng_giants_pt", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "pesquisa", "label": "pesquisa", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "datafolha", "label": "datafolha", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "mostra", "label": "mostra", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "entrevistados", "label": "entrevistados", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "apoiam", "label": "apoiam", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "passaporte", "label": "passaporte", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "cien", "label": "cien", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "contaminacao", "label": "contaminacao", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "especialistas", "label": "especialistas", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "contestam", "label": "contestam", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "quase", "label": "quase", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "todos", "label": "todos", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "vao", "label": "vao", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "pegar", "label": "pegar", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "medo", "label": "medo", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "alguem", "label": "alguem", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "apostou", "label": "apostou", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "junto", "label": "junto", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "ideia", "label": "ideia", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "resultado", "label": "resultado", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 1, "id": "@jr_ferreira_", "label": "@jr_ferreira_", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 1, "id": "vida", "label": "vida", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "brasileiro", "label": "brasileiro", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "facil", "label": "facil", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "pais", "label": "pais", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "continua", "label": "continua", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "sofrendo", "label": "sofrendo", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 8, "id": "pandemia", "label": "pandemia", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "fontSize": 2, "id": "ainda", "label": "ainda", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "precisa", "label": "precisa", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "lidar", "label": "lidar", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 4, "id": "saude", "label": "saude", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 2, "id": "omisso", "label": "omisso", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "declaracoes", "label": "declaracoes", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "mostram", "label": "mostram", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "papel", "label": "papel", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "obedecer", "label": "obedecer", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "orientacoes", "label": "orientacoes", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "ignorar", "label": "ignorar", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "estudos", "label": "estudos", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "analisam", "label": "analisam", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "protecao", "label": "protecao", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "@da_goiabeira", "label": "@da_goiabeira", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 1, "id": "fede", "label": "fede", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "sabia", "label": "sabia", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "carreata", "label": "carreata", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "apoio", "label": "apoio", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "buzinaco", "label": "buzinaco", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "frente", "label": "frente", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "hospital", "label": "hospital", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "superlotado", "label": "superlotado", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "pacientes", "label": "pacientes", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "entrou", "label": "entrou", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "governo", "label": "governo", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "possivel", "label": "possivel", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "pra", "label": "pra", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "desagradar", "label": "desagradar", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "chefe", "label": "chefe", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "nesse", "label": "nesse", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "assunto", "label": "assunto", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "risco", "label": "risco", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "morrer", "label": "morrer", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "vezes", "label": "vezes", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "maior", "label": "maior", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "resto", "label": "resto", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "2020", "label": "2020", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "federal", "label": "federal", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "medicina", "label": "medicina", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "vendido", "label": "vendido", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "damares", "label": "damares", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "veio", "label": "veio", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "havan", "label": "havan", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "muita", "label": "muita", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "disposicao", "label": "disposicao", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 1, "id": "@bastosjusmari", "label": "@bastosjusmari", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "@mqueiroga2", "label": "@mqueiroga2", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "@mfriasoficial", "label": "@mfriasoficial", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "@fa1rynight", "label": "@fa1rynight", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "@carteiroreaca", "label": "@carteiroreaca", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "@gfiuza_oficial", "label": "@gfiuza_oficial", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "@carlosbolsonaro", "label": "@carlosbolsonaro", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "@saritacoelho", "label": "@saritacoelho", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "@lesixel38", "label": "@lesixel38", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "@raife_arante", "label": "@raife_arante", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "@sf_moro", "label": "@sf_moro", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "povo", "label": "povo", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "deixou", "label": "deixou", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "indignar", "label": "indignar", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 7, "id": "lula", "label": "lula", "shape": "dot", "size": 7}, {"font": {"color": "white"}, "fontSize": 2, "id": "coisas", "label": "coisas", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "boas", "label": "boas", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "ruins", "label": "ruins", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 4, "id": "vai", "label": "vai", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 2, "id": "mesma", "label": "mesma", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "direcao", "label": "direcao", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "eleicao", "label": "eleicao", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "infelizmente", "label": "infelizmente", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "pois", "label": "pois", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 4, "id": "economia", "label": "economia", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 2, "id": "melhor", "label": "melhor", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "pegou", "label": "pegou", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "ser", "label": "ser", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "perdeu", "label": "perdeu", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "votos", "label": "votos", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "bolso", "label": "bolso", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "nulo", "label": "nulo", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 1, "id": "luciano", "label": "luciano", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "szafir", "label": "szafir", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "testa", "label": "testa", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "vez", "label": "vez", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "pessoal", "label": "pessoal", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "fazendo", "label": "fazendo", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "seguindo", "label": "seguindo", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 4, "id": "protocolos", "label": "protocolos", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 2, "id": "sigo", "label": "sigo", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "peguei", "label": "peguei", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "gracas", "label": "gracas", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "deus", "label": "deus", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "vacinado", "label": "vacinado", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "segue", "label": "segue", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "trabalhando", "label": "trabalhando", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "reune", "label": "reune", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "seis", "label": "seis", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "ex-ministros", "label": "ex-ministros", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "debater", "label": "debater", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "combate", "label": "combate", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "disse", "label": "disse", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "coisa", "label": "coisa", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "certa", "label": "certa", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "gestao", "label": "gestao", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "registrou", "label": "registrou", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "620", "label": "620", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 4, "id": "mil", "label": "mil", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "fontSize": 2, "id": "mortos", "label": "mortos", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 2, "id": "concorda", "label": "concorda", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "fontSize": 1, "id": "presidente", "label": "presidente", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "fontSize": 2, "id": "132", "label": "132", "shape": "dot", "size": 2}]);
+        edges = new vis.DataSet([{"from": "contra", "to": "covid", "value": 11}, {"from": "queiroga", "to": "mentiroso", "value": 6}, {"from": "mentiroso", "to": "antes", "value": 6}, {"from": "antes", "to": "virar", "value": 6}, {"from": "virar", "to": "ministro", "value": 6}, {"from": "ministro", "to": "02/02", "value": 6}, {"from": "02/02", "to": "dizia", "value": 6}, {"from": "dizia", "to": "claramente", "value": 6}, {"from": "claramente", "to": "ter", "value": 6}, {"from": "ter", "to": "tratamento", "value": 6}, {"from": "tratamento", "to": "eficaz", "value": 6}, {"from": "eficaz", "to": "contra", "value": 6}, {"from": "casos", "to": "covid", "value": 6}, {"from": "@desmentindobozo", "to": "queiroga", "value": 5}, {"from": "bolsonaro", "to": "guedes", "value": 5}, {"from": "guedes", "to": "pedem", "value": 5}, {"from": "pedem", "to": "servidores", "value": 5}, {"from": "servidores", "to": "casos", "value": 5}, {"from": "covid", "to": "explodem", "value": 5}, {"from": "explodem", "to": "cantora", "value": 5}, {"from": "cantora", "to": "contamina", "value": 5}, {"from": "contamina", "to": "proposito", "value": 5}, {"from": "proposito", "to": "morre", "value": 5}, {"from": "lutando", "to": "contra", "value": 4}, {"from": "sic", "to": "aqui", "value": 4}, {"from": "aqui", "to": "portugal", "value": 4}, {"from": "portugal", "to": "equivale", "value": 4}, {"from": "equivale", "to": "folha", "value": 4}, {"from": "folha", "to": "brasil", "value": 4}, {"from": "brasil", "to": "dizendo", "value": 4}, {"from": "dizendo", "to": "crianca", "value": 4}, {"from": "crianca", "to": "anos", "value": 4}, {"from": "anos", "to": "falecida", "value": 4}, {"from": "falecida", "to": "semana", "value": 4}, {"from": "semana", "to": "dose", "value": 4}, {"from": "dose", "to": "vacina", "value": 4}, {"from": "vacina", "to": "covid", "value": 4}, {"from": "covid", "to": "morreu", "value": 4}, {"from": "morreu", "to": "engasgamento", "value": 4}, {"from": "engasgamento", "to": "comida", "value": 4}, {"from": "comida", "to": "objeto", "value": 4}, {"from": "objeto", "to": "efeitos", "value": 4}, {"from": "efeitos", "to": "colaterais", "value": 4}, {"from": "colaterais", "to": "vacina", "value": 4}, {"from": "@metropoles", "to": "bolsonaro", "value": 4}, {"from": "morre", "to": "newslet", "value": 4}, {"from": "covid", "to": "media", "value": 3}, {"from": "media", "to": "casos", "value": 3}, {"from": "casos", "to": "dia", "value": 3}, {"from": "esquerda", "to": "festa", "value": 2}, {"from": "festa", "to": "avante", "value": 2}, {"from": "avante", "to": "setembro", "value": 2}, {"from": "setembro", "to": "2021", "value": 2}, {"from": "2021", "to": "covid", "value": 2}, {"from": "dia", "to": "350", "value": 2}, {"from": "350", "to": "direita", "value": 2}, {"from": "direita", "to": "arruada", "value": 2}, {"from": "arruada", "to": "psd", "value": 2}, {"from": "psd", "to": "rui", "value": 2}, {"from": "rui", "to": "rio", "value": 2}, {"from": "rio", "to": "ontem", "value": 2}, {"from": "vacina", "to": "contra", "value": 2}, {"from": "gente", "to": "forte", "value": 2}, {"from": "forte", "to": "mundo", "value": 2}, {"from": "mundo", "to": "inteiro", "value": 2}, {"from": "inteiro", "to": "lutando", "value": 2}, {"from": "covid", "to": "gente", "value": 2}, {"from": "gente", "to": "lutando", "value": 2}, {"from": "contra", "to": "bolsonaro", "value": 2}, {"from": "bolsonaro", "to": "minions", "value": 2}, {"from": "minions", "to": "conselho", "value": 2}, {"from": "bolsonaro", "to": "fez", "value": 2}, {"from": "positivo", "to": "covid", "value": 2}, {"from": "brasil", "to": "registra", "value": 2}, {"from": "registra", "to": "recorde", "value": 2}, {"from": "ontem", "to": "lisboa", "value": 1}, {"from": "lisboa", "to": "covid", "value": 1}, {"from": "dia", "to": "000", "value": 1}, {"from": "@slpng_giants_pt", "to": "pesquisa", "value": 1}, {"from": "pesquisa", "to": "datafolha", "value": 1}, {"from": "datafolha", "to": "mostra", "value": 1}, {"from": "mostra", "to": "entrevistados", "value": 1}, {"from": "entrevistados", "to": "apoiam", "value": 1}, {"from": "apoiam", "to": "passaporte", "value": 1}, {"from": "passaporte", "to": "vacina", "value": 1}, {"from": "covid", "to": "cien", "value": 1}, {"from": "bolsonaro", "to": "contaminacao", "value": 1}, {"from": "contaminacao", "to": "eficaz", "value": 1}, {"from": "eficaz", "to": "vacina", "value": 1}, {"from": "covid", "to": "especialistas", "value": 1}, {"from": "especialistas", "to": "contestam", "value": 1}, {"from": "contestam", "to": "quase", "value": 1}, {"from": "quase", "to": "todos", "value": 1}, {"from": "todos", "to": "vao", "value": 1}, {"from": "vao", "to": "pegar", "value": 1}, {"from": "pegar", "to": "dia", "value": 1}, {"from": "dia", "to": "medo", "value": 1}, {"from": "medo", "to": "alguem", "value": 1}, {"from": "alguem", "to": "apostou", "value": 1}, {"from": "apostou", "to": "junto", "value": 1}, {"from": "junto", "to": "ideia", "value": 1}, {"from": "ideia", "to": "resultado", "value": 1}, {"from": "@jr_ferreira_", "to": "esquerda", "value": 1}, {"from": "vida", "to": "brasileiro", "value": 1}, {"from": "brasileiro", "to": "facil", "value": 1}, {"from": "facil", "to": "pais", "value": 1}, {"from": "pais", "to": "continua", "value": 1}, {"from": "continua", "to": "sofrendo", "value": 1}, {"from": "sofrendo", "to": "pandemia", "value": 1}, {"from": "pandemia", "to": "ainda", "value": 1}, {"from": "ainda", "to": "precisa", "value": 1}, {"from": "precisa", "to": "lidar", "value": 1}, {"from": "lidar", "to": "ministro", "value": 1}, {"from": "ministro", "to": "saude", "value": 1}, {"from": "saude", "to": "omisso", "value": 1}, {"from": "omisso", "to": "mentiroso", "value": 1}, {"from": "mentiroso", "to": "declaracoes", "value": 1}, {"from": "declaracoes", "to": "mostram", "value": 1}, {"from": "mostram", "to": "papel", "value": 1}, {"from": "papel", "to": "obedecer", "value": 1}, {"from": "obedecer", "to": "orientacoes", "value": 1}, {"from": "orientacoes", "to": "bolsonaro", "value": 1}, {"from": "bolsonaro", "to": "ignorar", "value": 1}, {"from": "ignorar", "to": "estudos", "value": 1}, {"from": "estudos", "to": "analisam", "value": 1}, {"from": "analisam", "to": "protecao", "value": 1}, {"from": "protecao", "to": "contra", "value": 1}, {"from": "@da_goiabeira", "to": "gente", "value": 1}, {"from": "conselho", "to": "fede", "value": 1}, {"from": "sabia", "to": "carreata", "value": 1}, {"from": "carreata", "to": "apoio", "value": 1}, {"from": "apoio", "to": "bolsonaro", "value": 1}, {"from": "fez", "to": "buzinaco", "value": 1}, {"from": "buzinaco", "to": "frente", "value": 1}, {"from": "frente", "to": "hospital", "value": 1}, {"from": "hospital", "to": "superlotado", "value": 1}, {"from": "superlotado", "to": "pacientes", "value": 1}, {"from": "pacientes", "to": "covid", "value": 1}, {"from": "covid", "to": "entrou", "value": 1}, {"from": "entrou", "to": "governo", "value": 1}, {"from": "governo", "to": "bolsonaro", "value": 1}, {"from": "fez", "to": "possivel", "value": 1}, {"from": "possivel", "to": "pra", "value": 1}, {"from": "pra", "to": "desagradar", "value": 1}, {"from": "desagradar", "to": "chefe", "value": 1}, {"from": "chefe", "to": "nesse", "value": 1}, {"from": "nesse", "to": "assunto", "value": 1}, {"from": "sabia", "to": "risco", "value": 1}, {"from": "risco", "to": "morrer", "value": 1}, {"from": "morrer", "to": "covid", "value": 1}, {"from": "covid", "to": "brasil", "value": 1}, {"from": "brasil", "to": "vezes", "value": 1}, {"from": "vezes", "to": "maior", "value": 1}, {"from": "maior", "to": "resto", "value": 1}, {"from": "resto", "to": "mundo", "value": 1}, {"from": "mundo", "to": "2020", "value": 1}, {"from": "conselho", "to": "federal", "value": 1}, {"from": "federal", "to": "medicina", "value": 1}, {"from": "medicina", "to": "vendido", "value": 1}, {"from": "vendido", "to": "bolsonaro", "value": 1}, {"from": "bolsonaro", "to": "damares", "value": 1}, {"from": "damares", "to": "veio", "value": 1}, {"from": "veio", "to": "havan", "value": 1}, {"from": "havan", "to": "muita", "value": 1}, {"from": "muita", "to": "disposicao", "value": 1}, {"from": "@bastosjusmari", "to": "@mqueiroga2", "value": 1}, {"from": "@mqueiroga2", "to": "sic", "value": 1}, {"from": "@mfriasoficial", "to": "@fa1rynight", "value": 1}, {"from": "@fa1rynight", "to": "sic", "value": 1}, {"from": "@carteiroreaca", "to": "@gfiuza_oficial", "value": 1}, {"from": "@gfiuza_oficial", "to": "sic", "value": 1}, {"from": "@carlosbolsonaro", "to": "@saritacoelho", "value": 1}, {"from": "@saritacoelho", "to": "sic", "value": 1}, {"from": "@lesixel38", "to": "@raife_arante", "value": 1}, {"from": "@raife_arante", "to": "@sf_moro", "value": 1}, {"from": "@sf_moro", "to": "povo", "value": 1}, {"from": "povo", "to": "deixou", "value": 1}, {"from": "deixou", "to": "indignar", "value": 1}, {"from": "indignar", "to": "lula", "value": 1}, {"from": "lula", "to": "fez", "value": 1}, {"from": "fez", "to": "coisas", "value": 1}, {"from": "coisas", "to": "boas", "value": 1}, {"from": "boas", "to": "ruins", "value": 1}, {"from": "ruins", "to": "bolsonaro", "value": 1}, {"from": "bolsonaro", "to": "vai", "value": 1}, {"from": "vai", "to": "mesma", "value": 1}, {"from": "mesma", "to": "direcao", "value": 1}, {"from": "direcao", "to": "eleicao", "value": 1}, {"from": "eleicao", "to": "lula", "value": 1}, {"from": "lula", "to": "infelizmente", "value": 1}, {"from": "infelizmente", "to": "pois", "value": 1}, {"from": "pois", "to": "economia", "value": 1}, {"from": "economia", "to": "melhor", "value": 1}, {"from": "melhor", "to": "bolsonaro", "value": 1}, {"from": "bolsonaro", "to": "pegou", "value": 1}, {"from": "pegou", "to": "covid", "value": 1}, {"from": "covid", "to": "economia", "value": 1}, {"from": "economia", "to": "vai", "value": 1}, {"from": "vai", "to": "ser", "value": 1}, {"from": "ser", "to": "forte", "value": 1}, {"from": "forte", "to": "perdeu", "value": 1}, {"from": "perdeu", "to": "votos", "value": 1}, {"from": "votos", "to": "bolso", "value": 1}, {"from": "bolso", "to": "lula", "value": 1}, {"from": "lula", "to": "nulo", "value": 1}, {"from": "luciano", "to": "szafir", "value": 1}, {"from": "szafir", "to": "testa", "value": 1}, {"from": "testa", "to": "positivo", "value": 1}, {"from": "covid", "to": "vez", "value": 1}, {"from": "vez", "to": "pessoal", "value": 1}, {"from": "pessoal", "to": "fazendo", "value": 1}, {"from": "fazendo", "to": "pandemia", "value": 1}, {"from": "pandemia", "to": "seguindo", "value": 1}, {"from": "seguindo", "to": "protocolos", "value": 1}, {"from": "protocolos", "to": "sigo", "value": 1}, {"from": "protocolos", "to": "peguei", "value": 1}, {"from": "peguei", "to": "covid", "value": 1}, {"from": "covid", "to": "gracas", "value": 1}, {"from": "gracas", "to": "deus", "value": 1}, {"from": "deus", "to": "bolsonaro", "value": 1}, {"from": "bolsonaro", "to": "vacinado", "value": 1}, {"from": "vacinado", "to": "segue", "value": 1}, {"from": "segue", "to": "trabalhando", "value": 1}, {"from": "lula", "to": "reune", "value": 1}, {"from": "reune", "to": "seis", "value": 1}, {"from": "seis", "to": "ex-ministros", "value": 1}, {"from": "ex-ministros", "to": "saude", "value": 1}, {"from": "saude", "to": "debater", "value": 1}, {"from": "debater", "to": "combate", "value": 1}, {"from": "combate", "to": "pandemia", "value": 1}, {"from": "pandemia", "to": "covid", "value": 1}, {"from": "bolsonaro", "to": "disse", "value": 1}, {"from": "disse", "to": "fez", "value": 1}, {"from": "fez", "to": "coisa", "value": 1}, {"from": "coisa", "to": "certa", "value": 1}, {"from": "certa", "to": "gestao", "value": 1}, {"from": "gestao", "to": "pandemia", "value": 1}, {"from": "pandemia", "to": "brasil", "value": 1}, {"from": "brasil", "to": "registrou", "value": 1}, {"from": "registrou", "to": "620", "value": 1}, {"from": "620", "to": "mil", "value": 1}, {"from": "mil", "to": "mortos", "value": 1}, {"from": "mortos", "to": "covid", "value": 1}, {"from": "covid", "to": "aqui", "value": 1}, {"from": "aqui", "to": "concorda", "value": 1}, {"from": "concorda", "to": "presidente", "value": 1}, {"from": "recorde", "to": "132", "value": 1}, {"from": "132", "to": "mil", "value": 1}, {"from": "mil", "to": "casos", "value": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -80000,
+            "springConstant": 0.001,
+            "springLength": 250
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+        // if this network requires displaying the configure window,
+        // put it in its div
+        options.configure["container"] = document.getElementById("config");
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

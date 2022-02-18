@@ -1,20 +1,24 @@
+from shutil import move
 import django_rq
 import time
-
-from .forms import *
-from .models import *
+import itertools
+import os
+from django.db.models import Count
 from django.views.generic.edit import FormView
 from django.db.models import Avg
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.core.paginator import Paginator
-from django.db.models.functions import Concat
-from django.db.models import F
-from .plots.wordCloud import generateWordCloud
 
-from integrated.settings import COLLECTOR_JOB_NAME, MAX_INT, ERROR_MSG
+from .plots.wordCloud import generateWordCloud
+from .plots.co_occurr_net import generateCoOccurrence
+from .monitor.source.identificacao.utils.text_processor import TextProcessor 
+from integrated.settings import BASE_DIR, COLLECTOR_JOB_NAME, MAX_INT, ERROR_MSG, HTML_PATH
 
 from main.monitor.caller import django_caller
 from main.utils import *
+
+from .forms import *
+from .models import *
 
 
 
@@ -24,8 +28,9 @@ def index(request):
   
   """
   createMachineLearningMethods()
-  
   tt = Tweet.objects.count()
+  authors = Tweet.objects.values('author_id').annotate(Count('author_id'))
+
   avg_score = None
   try:
     avg_score = Tweet.objects.aggregate(Avg('electoral_score')) 
@@ -35,8 +40,7 @@ def index(request):
  
   return render(request, 'main/index.html', {
     'total_tweets' :tt,
-    'avg_score': avg_score,
-    
+    'avg_score': avg_score,    
   })
   
   
@@ -141,7 +145,7 @@ class DataAnalysis(FormView):
 
     empty_query = True if tweet_list.count() == 0 else False
     
-    paginator = Paginator(tweet_list, 10)
+    paginator = Paginator(tweet_list, 5)
     
     page_number = request.GET.get('page')
     
@@ -174,21 +178,38 @@ class DataAnalysis(FormView):
 class GraphPlots(DataAnalysis):
   
   path = "main/graph_plot.html"
+  path2 = "main/cooccurr.html"
   plot_type = ""
+  
+  obj = TextProcessor()
+  
+  NUMBER_OF_TWEETS = 1000
   
   def get(self, request):
     parameters, filters, tweet_list = self._DataAnalysis__getParameters(request)
-    image = None
     
     print(self.plot_type)
-    print(filters)
+    image = None
     
-    if self.plot_type == "cloudWord":
-      
-      text = tweet_list.values_list("text", flat=True)
-      final_text = ''.join(text).replace('de|RT|e|https|HTTPS|Https', '')
+    tweet_list = tweet_list[:self.NUMBER_OF_TWEETS]
+    text = tweet_list.values_list("text", flat=True)    
+    text = self.obj.text_process(text)
+
+    if self.plot_type == "cloudWord":      
+      final_text = list(itertools.chain.from_iterable(text))
+    
+      final_text = " ".join(final_text)
       
       image = generateWordCloud(final_text)
-      
-  
-    return render(request, self.path, {'imagem': image})
+    
+      return render(request, self.path, {'imagem': image})
+
+
+    if self.plot_type == "coOccurrence":
+      bigrams = self.obj.construct_bigrams(text)
+      file_name = (HTML_PATH.split('/'))[-1]
+      generateCoOccurrence(bigrams, file_name)
+      initial_path = os.path.join(BASE_DIR, file_name)
+      print(initial_path, HTML_PATH)
+      shutil.move(os.path.join(BASE_DIR, file_name), HTML_PATH)
+      return render(request, self.path2)
