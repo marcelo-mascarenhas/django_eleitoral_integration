@@ -1,6 +1,13 @@
 {% extends 'main/layout.html' %}
 {% load static %}
 
+{% block script %}
+  <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="{% static "js/plots.js" %}"></script>
+
+
+{% endblock script %}
+
 {% block body %}
 <link href="{% static 'css/dashboard3.css' %}" rel="stylesheet">
 
@@ -23,7 +30,7 @@
           <div class="flex-auto p-4">
             <div class="flex flex-wrap">
               <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Média de Score eleitoral</h5><span class="font-semibold text-xl text-blueGray-700">{{ avg_score }}</span>
+                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Média de Score eleitoral do Dataset</h5><span class="font-semibold text-xl text-blueGray-700">{{ avg_score }}</span>
               </div>
             </div>
           </div>
@@ -34,7 +41,7 @@
           <div class="flex-auto p-4">
             <div class="flex flex-wrap">
               <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Tweets coletados na última semana</h5><span class="font-semibold text-xl text-blueGray-700">4230</span>
+                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Tweets coletados da última semana</h5><span class="font-semibold text-xl text-blueGray-700">{{n_of_tlw}}</span>
               </div>
             </div>
           </div>
@@ -45,7 +52,7 @@
           <div class="flex-auto p-4">
             <div class="flex flex-wrap">
               <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                <h5 class="text-blueGray-400 uppercase font-bold text-xs">ABCE</h5><span class="font-semibold text-xl text-blueGray-700">ABCADE</span>
+                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Número de usuários distintos</h5><span class="font-semibold text-xl text-blueGray-700">{{n_of_authors}}</span>
               </div>
             </div>
           </div>
@@ -54,129 +61,20 @@
     </div>
   </div>
 </div>
-<div class="px-4 md:px-10 mx-auto w-full -m-24">
-  <div class="flex flex-wrap">
-    <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-      <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">
-        <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
-          <div class="flex flex-wrap items-center">
-            <div class="relative w-full max-w-full flex-grow flex-1">
-              <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">últimos tweets coletados com maior score eleitoral</h6>
-              <h2 class="text-white text-xl font-semibold"></h2>
-            </div>
-          </div>
-        </div>
-        <div class="p-4 flex-auto">
-          <div class="relative h-350-px">
-            <div class="chartjs-size-monitor">
-              <div class="chartjs-size-monitor-expand">
-                <div class=""></div>
-              </div>
-              <div class="chartjs-size-monitor-shrink">
-                <div class=""></div>
-              </div>
-            </div>
-            <div id="line-chart" style="display: block; height: 350px; width: 798px;" width="1758" height="771" class="chartjs-render-monitor">
-              {% for item in tweets %}
-              <div class="box-layout">
-                <div class="flex-columnxd">
-                  <div>User ID: {{item.author_id}}</div>   
-                  <div>Score: {{item.electoral_score}}</div>                    
-                </div>
-              <div>{{item.text}}</div>
 
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="w-full xl:w-4/12 px-4">
-      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-        <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
-          <div class="flex flex-wrap items-center">
-            <div class="relative w-full max-w-full flex-grow flex-1">
-              <h6 class="uppercase text-blueGray-400 mb-1 text-xs font-semibold">Últimos tweets coletados com maior score</h6>
-            </div>
-          </div>
-        </div>
-        <div class="p-4 flex-auto">
-          <div class="relative h-350-px">
-            <div class="chartjs-size-monitor">
-              <div class="chartjs-size-monitor-expand">
-                <div class=""></div>
-              </div>
-              <div class="chartjs-size-monitor-shrink">
-                <div class=""></div>
-              </div>
-            </div>
-            <div id="bar-chart" style="display: block; height: 350px; width: 798px;" width="1758" height="771" class="chartjs-render-monitor">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="canvas-supporter">
+  <div class="histo">
+    <h5 class="text-blueGray-400 uppercase font-bold text-xs title">Histograma1 do abalo</h5>
+    <canvas id="histogramUser" width="500" height="500"></canvas>
+  </div>  
+  
+  <div class="histo">
+    <h5 class="text-blueGray-400 uppercase font-bold text-xs title">Histograma1 do abalo</h5>
+    <canvas id="histogramUser" width="500" height="500"></canvas>
   </div>
-  <div class="flex flex-wrap mt-4">
-    <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-        <div class="rounded-t mb-0 px-4 py-3 border-0">
-          <div class="flex flex-wrap items-center">
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3 class="font-semibold text-base text-blueGray-700">XXXXX XXXXX</h3>
-            </div>
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"></div>
-          </div>
-        </div>
-        <div class="block w-full overflow-x-auto">
-          <table class="items-center w-full bg-transparent border-collapse">
-            <thead>
-              <tr>
-                <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">XXXXXX</th>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">XXXXXX</td>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">XXXXX</td>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">XXXXXX</td>
-              </tr>
-              <tr>
-                <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">XXXXXXXXX</th>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">XXXXX</td>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">XXXXXXX</td>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">XXXXXX</td>
-              </tr>
-            </thead>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="w-full xl:w-4/12 px-4">
-      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-        <div class="rounded-t mb-0 px-4 py-3 border-0">
-          <div class="flex flex-wrap items-center">
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3 class="font-semibold text-base text-blueGray-700">XXXXXX</h3>
-            </div>
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"></div>
-          </div>
-        </div>
-        <div class="block w-full overflow-x-auto">
-          <table class="items-center w-full bg-transparent border-collapse"></table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer class="block py-4">
-    <div class="container mx-auto px-4">
-      <hr class="mb-4 border-b-1 border-blueGray-200">
-      <div class="flex flex-wrap items-center md:justify-between justify-center">
-        <div class="w-full md:w-4/12 px-4">
-          <div class="text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left"></div>
-        </div>
-        <div class="w-full md:w-8/12 px-4"></div>
-      </div>
-    </div>
-  </footer>
 </div>
+
+
 
 
 {% endblock body %}

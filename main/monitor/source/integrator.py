@@ -68,7 +68,6 @@ class Integrator():
     
     while True:
       try:
-        
         first_tweet_data = first_tweet['data']
                 
         if classify:

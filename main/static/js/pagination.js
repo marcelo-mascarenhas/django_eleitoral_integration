@@ -1,6 +1,5 @@
 // Initialize slider:
 
-
 $(document).ready(function() {
   $('.noUi-handle').on('click', function() {
     $(this).width(50);
@@ -1990,10 +1989,3 @@ $( function(){
     prevText: 'Anterior'
 });
 });
-
-
-function placeScores(){
-  document.getElementById('id_score_min').value =  document.getElementById('slider-range-value1').innerHTML
-  document.getElementById('id_score_max').value =  document.getElementById('slider-range-value2').innerHTML
-
-};

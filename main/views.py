@@ -1,13 +1,25 @@
+from lib2to3.pgen2.token import NUMBER
 from shutil import move
 import django_rq
 import time
 import itertools
 import os
+
+from datetime import timedelta
+from django.utils import timezone
+
 from django.db.models import Count
 from django.views.generic.edit import FormView
 from django.db.models import Avg
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.forms.models import model_to_dict
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+
 
 from .plots.wordCloud import generateWordCloud
 from .plots.co_occurr_net import generateCoOccurrence
@@ -28,11 +40,20 @@ def index(request):
   
   """
   createMachineLearningMethods()
+  #Number of tweets in the database.
   tt = Tweet.objects.count()
-  authors = Tweet.objects.values('author_id').annotate(Count('author_id'))
+  
+  #Number of different users in the database.
+  authors = Tweet.objects.values('author_id').annotate(Count('author_id')).order_by('-author_id__count')
+  number_of_authors = authors.count()
+  print(authors)
+  #Tweets retrieved in the last week
+  tlw = Tweet.objects.filter(created_at__gte=timezone.now().date() - timedelta(days=7), created_at__lte=timezone.now().date())
+  tlw = tlw.count()
 
   avg_score = None
   try:
+    #Average score of the database.
     avg_score = Tweet.objects.aggregate(Avg('electoral_score')) 
     avg_score = round(avg_score['electoral_score__avg'], 5)
   except:
@@ -40,7 +61,10 @@ def index(request):
  
   return render(request, 'main/index.html', {
     'total_tweets' :tt,
-    'avg_score': avg_score,    
+    'avg_score': avg_score,
+    'n_of_authors': number_of_authors,
+    'n_of_tlw': tlw,
+    'authors': authors
   })
   
   
@@ -82,6 +106,21 @@ def stopCollector(request):
   time.sleep(1)
   return redirect(execution)
 
+
+class ListUsers(APIView):
+  authentication_classes = []
+  permission_classes = []
+
+  def get(self, request, score):
+    NUMBER_OF_AUTHORS = 15
+    obj =  Tweet.objects.filter(electoral_score__gte = score).values('author_id').annotate(Count('author_id')).order_by('-author_id__count')[:NUMBER_OF_AUTHORS]
+    json_data = {}
+    for item in obj.iterator():
+      json_data[item['author_id']] = item['author_id__count']
+    
+    return Response(json_data)
+
+
 class Configuration(FormView):
   """
   Stores the methods related to the configuration page. Also contains the class object reponsible
@@ -96,7 +135,9 @@ class Configuration(FormView):
   fih = FileHandler()
   
   def get(self, request, error_msg=None):
+    
     file_information = self.fih.getTwitterConfigurationFile()
+    
     selected = self.fih.selectedMlMethod()
 
     
@@ -131,7 +172,6 @@ class Configuration(FormView):
       return HttpResponseRedirect("Ooooops... Something went wrong.")
 
 
-
 class DataAnalysis(FormView):
   
   path = 'main/analise.html'
@@ -139,13 +179,16 @@ class DataAnalysis(FormView):
   filter_by = OrderBy()
   
   filt_obj = FilterHandler()
+
+  PAG_NUMBER = 5
   
   def get(self, request):
     parameters, filters, tweet_list = self.__getParameters(request)
 
     empty_query = True if tweet_list.count() == 0 else False
     
-    paginator = Paginator(tweet_list, 5)
+    #Create the paginator
+    paginator = Paginator(tweet_list, self.PAG_NUMBER)
     
     page_number = request.GET.get('page')
     
@@ -174,7 +217,6 @@ class DataAnalysis(FormView):
     return parameters, filters, tweet_list
   
 
-
 class GraphPlots(DataAnalysis):
   
   path = "main/graph_plot.html"
@@ -187,8 +229,6 @@ class GraphPlots(DataAnalysis):
   
   def get(self, request):
     parameters, filters, tweet_list = self._DataAnalysis__getParameters(request)
-    
-    print(self.plot_type)
     image = None
     
     tweet_list = tweet_list[:self.NUMBER_OF_TWEETS]
@@ -206,10 +246,13 @@ class GraphPlots(DataAnalysis):
 
 
     if self.plot_type == "coOccurrence":
+      #Construct bigrams to generate the co-occurrence graph.
       bigrams = self.obj.construct_bigrams(text)
+      
       file_name = (HTML_PATH.split('/'))[-1]
+      
       generateCoOccurrence(bigrams, file_name)
-      initial_path = os.path.join(BASE_DIR, file_name)
-      print(initial_path, HTML_PATH)
+      #Move the HTML from the base directory to the HTML folder.
       shutil.move(os.path.join(BASE_DIR, file_name), HTML_PATH)
       return render(request, self.path2)
+

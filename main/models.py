@@ -5,22 +5,22 @@ class User(models.Model):
   
   user_id = models.BigIntegerField(primary_key=True)
   
-  user_screen_name = models.CharField(max_length=50)
+  # user_screen_name = models.CharField(max_length=50)
   
-  user_name = models.CharField(max_length=150)
+  # user_name = models.CharField(max_length=150)
   
-  user_verified = models.BooleanField()
+  # user_verified = models.BooleanField()
   
-  user_location = models.CharField(max_length=150)
+  # user_location = models.CharField(max_length=150)
   
-  created_at = models.DateTimeField()
+  # created_at = models.DateTimeField()
  
 
 class Tweet(models.Model):
   
   tweet_id = models.BigIntegerField(primary_key=True)
   
-  author_id = models.BigIntegerField()
+  author_id = models.ForeignKey(User, on_delete=models.CASCADE)
   
   text = models.CharField(max_length=280)
     

@@ -519,3 +519,24 @@ html, body {
   font-size: 1.5vh;
   color: #fff;
 }
+
+.canvas-supporter{
+  background-color: #050A30;
+  color: azure;
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+  height:160vh;
+}
+
+.histo{
+  background-color: #31406c;
+  margin: 20px 30px 20px 30px;
+  height: 70vh;
+}
+
+.title{
+  padding: 10px;
+  margin-bottom: 5px;
+
+}

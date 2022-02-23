@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'main',
     "django_rq",
     "mathfilters",
+    "chartjs",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
