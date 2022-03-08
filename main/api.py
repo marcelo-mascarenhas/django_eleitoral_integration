@@ -17,14 +17,14 @@ class GetScores(APIView):
       london_time = timezone.now() + timedelta(hours=3)
       date_range = [london_time-timedelta(days=days), london_time]
 
-      for score in range(1, 101, 1):
+      for score in range(1, 102, 1):
         higher_score = score/100
         
         lower_score = round(higher_score - 0.01,2)
+        print(lower_score)
         
         dict_key = f'{lower_score}'
-        if higher_score == 1.0:
-          dict_key = f'{higher_score}'
+        if higher_score == 1.01:
           count_dict[dict_key] = Tweet.objects.filter(electoral_score__gte=1,
                                               created_at__range=date_range).count()
         elif lower_score == 0.0:
