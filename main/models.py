@@ -3,17 +3,19 @@ from django.db import models
 
 class User(models.Model):
   
-  user_id = models.BigIntegerField(primary_key=True)
+  dui = models.AutoField(primary_key=True)
   
-  # user_screen_name = models.CharField(max_length=50)
+  user_id = models.BigIntegerField(unique=True, blank=False)
+    
+  user_screen_name = models.CharField(max_length=50, blank=True, null=True)
   
-  # user_name = models.CharField(max_length=150)
+  user_name = models.CharField(max_length=150, blank=True, null=True)
   
-  # user_verified = models.BooleanField()
+  user_verified = models.BooleanField(blank=True, null=True)
   
-  # user_location = models.CharField(max_length=150)
+  user_location = models.CharField(max_length=150, blank=True, null=True)
   
-  # created_at = models.DateTimeField()
+  created_at = models.DateTimeField(blank=True, null=True)
  
 
 class Tweet(models.Model):
@@ -38,7 +40,7 @@ class Tweet(models.Model):
   
   quote_count = models.SmallIntegerField()
   
-  referenced = models.BooleanField()
+  tweet_type = models.CharField(max_length=12, null=True)
 
   
 class MachineLearningMethod(models.Model):

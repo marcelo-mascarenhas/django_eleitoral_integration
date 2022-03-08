@@ -156,3 +156,5 @@ FILTER_ID = 1
 MAX_INT = 100000000
 
 ERROR_MSG = 'SystemExit: None'
+
+USER_FILTER_PATTERN = r'{{%(.+)%}}\|'

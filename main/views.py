@@ -1,4 +1,3 @@
-from lib2to3.pgen2.token import NUMBER
 from shutil import move
 import django_rq
 import time
@@ -13,13 +12,6 @@ from django.views.generic.edit import FormView
 from django.db.models import Avg
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.core.paginator import Paginator
-from django.http import JsonResponse
-from django.forms.models import model_to_dict
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import authentication, permissions
-
 
 from .plots.wordCloud import generateWordCloud
 from .plots.co_occurr_net import generateCoOccurrence
@@ -32,13 +24,12 @@ from main.utils import *
 from .forms import *
 from .models import *
 
-
-
 def index(request):
   """
   Load the dashboard and the initial configuration.
   
   """
+  createExecutionHandler()
   createMachineLearningMethods()
   #Number of tweets in the database.
   tt = Tweet.objects.count()
@@ -46,9 +37,9 @@ def index(request):
   #Number of different users in the database.
   authors = Tweet.objects.values('author_id').annotate(Count('author_id')).order_by('-author_id__count')
   number_of_authors = authors.count()
-  print(authors)
   #Tweets retrieved in the last week
-  tlw = Tweet.objects.filter(created_at__gte=timezone.now().date() - timedelta(days=7), created_at__lte=timezone.now().date())
+  london_time = timezone.now() + timedelta(hours=3)
+  tlw = Tweet.objects.filter(created_at__range=[london_time - timedelta(days=7), london_time])
   tlw = tlw.count()
 
   avg_score = None
@@ -107,18 +98,39 @@ def stopCollector(request):
   return redirect(execution)
 
 
-class ListUsers(APIView):
-  authentication_classes = []
-  permission_classes = []
+# class GetScores(APIView):
+#   authentication_classes = []
+#   permission_classes = []
+  
+#   def get(self, request):
+#     pass
 
-  def get(self, request, score):
-    NUMBER_OF_AUTHORS = 15
-    obj =  Tweet.objects.filter(electoral_score__gte = score).values('author_id').annotate(Count('author_id')).order_by('-author_id__count')[:NUMBER_OF_AUTHORS]
-    json_data = {}
-    for item in obj.iterator():
-      json_data[item['author_id']] = item['author_id__count']
+
+
+# class ListUsers(APIView):
+#   authentication_classes = []
+#   permission_classes = []
+
+#   def get(self, request):
+#     NUMBER_OF_AUTHORS = 15
+
+#     score = request.GET.get('score')
+#     verified = request.GET.get('verified')
     
-    return Response(json_data)
+#     check = True if verified == "True" else False
+    
+#     users =  Tweet.objects.filter(electoral_score__gte = score)
+    
+#     if check:
+#       users = users.filter(author_id__user_verified=check)
+    
+#     users = users.values('author_id').annotate(Count('author_id')).order_by('-author_id__count')[:NUMBER_OF_AUTHORS]
+    
+#     json_data = {}
+#     for item in users.iterator():
+#       json_data[item['author_id']] = item['author_id__count']
+    
+#     return Response(json_data)
 
 
 class Configuration(FormView):
@@ -139,8 +151,6 @@ class Configuration(FormView):
     file_information = self.fih.getTwitterConfigurationFile()
     
     selected = self.fih.selectedMlMethod()
-
-    
     print(self.fih.selectedMlMethod())
     
     return render(request, self.template_name, {

@@ -1989,3 +1989,8 @@ $( function(){
     prevText: 'Anterior'
 });
 });
+
+function placeScores(){
+  document.getElementById('id_score_min').value =  document.getElementById('slider-range-value1').innerHTML;
+  document.getElementById('id_score_max').value =  document.getElementById('slider-range-value2').innerHTML;
+};

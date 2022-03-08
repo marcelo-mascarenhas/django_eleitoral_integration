@@ -19,9 +19,14 @@ def normalize_min_max(a, b, ndict):
   max_dict_value = max(ndict.values())
   
   for key,value in ndict.items():
-    #Min_Max feature scaling
-    ndict[key] = a + ((value - min_dict_value)*(b-a))/(max_dict_value - min_dict_value)
-
+    #If the two values are equal, then it will give a ZeroDivisionError. So, the value of all items are 'a'.
+    if max_dict_value != min_dict_value:
+      ndict[key] = a + ((value - min_dict_value)*(b-a))/(max_dict_value - min_dict_value)
+    else:
+      ndict[key] = a
+      
+      
+      
 def getDict(big, a=0, b=1, normalize=True):
   """
   Calculate the TF of the bigram's terms in the text corpus. If normalize == True, then it will use a and b to 
@@ -50,7 +55,7 @@ def generateCoOccurrence(bigrams, name):
   bigrams = list(itertools.chain(*bigrams))
   
   bigram_counts = collections.Counter(bigrams)
-  big = bigram_counts.most_common(350)
+  big = bigram_counts.most_common(300)
   
   nodedic = getDict(big, MIN, MAX)
   
@@ -94,7 +99,7 @@ def generateCoOccurrence(bigrams, name):
   },
 "physics": {
   "repulsion": {      
-  "nodeDistance": 400    
+  "nodeDistance": 600    
   },
   "minVelocity": 0.75,    
   "solver": "repulsion"}

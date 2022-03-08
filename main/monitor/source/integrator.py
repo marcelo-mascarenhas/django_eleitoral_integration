@@ -1,3 +1,4 @@
+from textwrap import indent
 from TwitterAPI.TwitterError import TwitterRequestError, TwitterConnectionError
 
 from .twitter.twitter_collector import *
@@ -69,17 +70,32 @@ class Integrator():
     while True:
       try:
         first_tweet_data = first_tweet['data']
-                
+        print(json.dumps(first_tweet_data, indent=5))       
         if classify:
           
-          if 'referenced_tweets' in first_tweet_data and 'id_hydrate' in first_tweet_data['referenced_tweets'][0]:
-            new_tt = first_tweet_data['referenced_tweets'][0]['id_hydrate']
-            
-            new_tt['score'] = str(electobj.escreve_score_metodo(new_tt['text']))
-            
-            new_tt['utilized_method'] = electobj.metodo_selecionado
-            
-            database_interactor.saveInformation(new_tt, referenced=True)
+          if 'referenced_tweets' in first_tweet_data:
+            for ref_tweet in first_tweet_data['referenced_tweets']:
+              if 'id_hydrate' in ref_tweet:
+                new_tt = ref_tweet['id_hydrate']
+                
+                new_tt['score'] = str(electobj.escreve_score_metodo(new_tt['text']))
+                
+                new_tt['utilized_method'] = electobj.metodo_selecionado
+
+                author_info = None
+                complete = True
+                #Try to search informations of the author in the entities field.
+                if 'mentions' in first_tweet_data['entities']:
+                  for item in first_tweet_data['entities']['mentions']:
+                    if item['id'] == new_tt['author_id'] and 'id_hydrate' in item:
+                      author_info = item['id_hydrate']
+                      break
+                  
+                if author_info == None:
+                  author_info = {'id': new_tt['author_id']}
+                  complete = False
+                
+                database_interactor.saveInformation(new_tt, author_info, complete)
             
             
           score = electobj.escreve_score_metodo(first_tweet_data['text'])
@@ -89,7 +105,7 @@ class Integrator():
           first_tweet_data['utilized_method'] = electobj.metodo_selecionado
       
         
-        database_interactor.saveInformation(first_tweet_data)
+        database_interactor.saveInformation(first_tweet_data, first_tweet_data['author_id_hydrate'])
                 
         controller_object.shouldContinue()
         first_tweet = cursor.__next__()

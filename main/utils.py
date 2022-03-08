@@ -1,12 +1,14 @@
 import django_rq
 import json
 import datetime
-
+import re
 import shutil
+
+from py import process
 
 from .models import ExecutionHandler, MachineLearningMethod, Tweet
 
-from integrated.settings import COLLECTOR_JOB_ID, CONFIGURATION_PATH, TWITTER_FILE_NAME, ELECT_FILE_NAME
+from integrated.settings import COLLECTOR_JOB_ID, CONFIGURATION_PATH, TWITTER_FILE_NAME, ELECT_FILE_NAME, USER_FILTER_PATTERN
 from .monitor.source.identificacao.identificacao import METODOS_POSSIVEIS
 
 
@@ -45,6 +47,13 @@ def createMachineLearningMethods():
       obj = MachineLearningMethod(method=name)
       obj.save()
 
+def createExecutionHandler():
+  if not ExecutionHandler.objects.filter(process_id=COLLECTOR_JOB_ID).exists():
+    obj = ExecutionHandler(process_id=COLLECTOR_JOB_ID, continue_run=False)
+    obj.save()
+
+
+
 class FilterHandler():
   
   def create_filter_attributes(self, request):
@@ -62,11 +71,11 @@ class FilterHandler():
     filters['min_date'] = request.GET.get('data_min') if request.GET.get('data_min') != None else ""  
     
     filters['min_score'] = request.GET.get('score_min') if request.GET.get('min_value') != None else 0
-    
+    print()
     filters['max_score'] = request.GET.get('score_max') if request.GET.get('max_value') != None else 1
     
     filters['sort_by'] = request.GET.get('mtd') if request.GET.get('mtd') != None else "electoral_score"
-    
+    print("Saiu daqui")
     return filters
 
   def getFilteredTwitterList(self, filters):
@@ -79,7 +88,13 @@ class FilterHandler():
     
     #Nested filtering.
     if filters['search_bar'] != "":
-      twitter_list = twitter_list.filter(text__icontains=filters['search_bar'])
+      user_id, final_text = self.__findUserId(filters['search_bar'])
+      
+      if user_id != None:
+        twitter_list = twitter_list.filter(author_id=user_id)
+      
+      twitter_list = twitter_list.filter(text__icontains=final_text)
+      
     
     if filters['max_date'] != "" and filters['min_date'] != "":
       
@@ -97,7 +112,25 @@ class FilterHandler():
     
     return twitter_list
     
-
+  def __findUserId(self, text):
+    user_id = None
+    substring = re.search(USER_FILTER_PATTERN, text)
+    
+    if substring != None:                          
+      #Removing the pattern to determine the user from the text.
+      text = re.sub(USER_FILTER_PATTERN, '', text).lstrip()
+      
+      #Trying to take int from the number extracted. If it fails, then user_id continues to be None
+      #and the filtering won't happen.
+      try:
+        tmp = int(substring.group(1))
+        user_id = tmp      
+      except ValueError:
+        pass
+    
+    return user_id, text
+        
+  
 def move_file(base, destination):
   shutil.move(base, destination)
 
