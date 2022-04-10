@@ -1,4 +1,5 @@
 from shutil import move
+from unicodedata import name
 import django_rq
 import time
 import itertools
@@ -12,6 +13,9 @@ from django.views.generic.edit import FormView
 from django.db.models import Avg
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
+
 
 from .plots.wordCloud import generateWordCloud
 from .plots.co_occurr_net import generateCoOccurrence
@@ -58,7 +62,7 @@ def index(request):
     'authors': authors
   })
   
-  
+@user_passes_test(lambda u: u.is_superuser)
 def execution(request, status=None):
   running = doesJobExists(COLLECTOR_JOB_NAME)
   
@@ -78,6 +82,7 @@ def execution(request, status=None):
     'error_msg': status
   })
 
+@user_passes_test(lambda u: u.is_superuser)
 def executeCollector(request):
   queue = django_rq.get_queue(autocommit=True, default_timeout=MAX_INT, is_async=True)
   if not queue.is_empty():
@@ -88,6 +93,7 @@ def executeCollector(request):
       
   return redirect(execution)
 
+@user_passes_test(lambda u: u.is_superuser)
 def stopCollector(request):
   collector_job = getJob(COLLECTOR_JOB_NAME)
   
@@ -132,7 +138,6 @@ def stopCollector(request):
     
 #     return Response(json_data)
 
-
 class Configuration(FormView):
   """
   Stores the methods related to the configuration page. Also contains the class object reponsible
@@ -146,6 +151,9 @@ class Configuration(FormView):
   
   fih = FileHandler()
   
+  
+  @method_decorator(user_passes_test(lambda u: u.is_superuser))
+ 
   def get(self, request, error_msg=None):
     
     file_information = self.fih.getTwitterConfigurationFile()
@@ -160,7 +168,6 @@ class Configuration(FormView):
       'selected': selected
     })
   
-          
   def post(self, request):
     form = ConfigurationForm(request.POST)
     

@@ -43,7 +43,6 @@ def getDict(big, a=0, b=1, normalize=True):
   
   if normalize == True:
     normalize_min_max(a, b, node_dict)
-  
   return node_dict
 
 
@@ -65,8 +64,8 @@ def generateCoOccurrence(bigrams, name):
   
   for key, value in nodedic.items():
     N.add_node(key, size=value, fontSize=value)
-    
   
+    
   for name_tuple, count in big:
     id1, id2 = name_tuple
     if id1 == id2:
@@ -99,7 +98,7 @@ def generateCoOccurrence(bigrams, name):
   },
 "physics": {
   "repulsion": {      
-  "nodeDistance": 600    
+  "nodeDistance": 550    
   },
   "minVelocity": 0.75,    
   "solver": "repulsion"}
