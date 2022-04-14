@@ -27,7 +27,7 @@
   </head>
     <header class="flex-container">
         <div>
-            <h1 id='title'>Monitor de Propaganda Eleitoral</h1>
+            <h1 id='title'>Monitor of Early Electoral Propaganda</h1>
         </div>
         <nav>
             <ul class="nav">
@@ -37,16 +37,16 @@
                 {% if user.is_superuser %}                      
 
                 <li class="nav-item">
-                    <a class="nav-link" href={% url 'execucao' %}>Execução</a>
+                    <a class="nav-link" href={% url 'execucao' %}>Execution</a>
                 </li>
                 {%endif%}
                 <li class="nav-item">
-                    <a class="nav-link" href={%url 'analise' %}>Análise de dados</a>
+                    <a class="nav-link" href={%url 'analise' %}>Data Analysis</a>
                 </li>
                 {% if user.is_superuser %}                      
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'configuration' %}">Configurações</a>
+                    <a class="nav-link" href="{% url 'configuration' %}">Configuration</a>
                 </li>
                 {% endif %}
             </ul>

@@ -20,7 +20,7 @@
           <div class="flex-auto p-4">
             <div class="flex flex-wrap">
               <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Número total de tweets coletados</h5><span class="font-semibold text-xl text-blueGray-700">{{ total_tweets }}</span>
+                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Number of Collected Tweets</h5><span class="font-semibold text-xl text-blueGray-700">{{ total_tweets }}</span>
               </div>
             </div>
           </div>
@@ -31,7 +31,7 @@
           <div class="flex-auto p-4">
             <div class="flex flex-wrap">
               <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Média de Score eleitoral do Dataset</h5><span class="font-semibold text-xl text-blueGray-700">{{ avg_score }}</span>
+                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Average Electoral Score</h5><span class="font-semibold text-xl text-blueGray-700">{{ avg_score }}</span>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@
           <div class="flex-auto p-4">
             <div class="flex flex-wrap">
               <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Tweets coletados da última semana</h5><span class="font-semibold text-xl text-blueGray-700">{{n_of_tlw}}</span>
+                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Collected Tweets From Last Week</h5><span class="font-semibold text-xl text-blueGray-700">{{n_of_tlw}}</span>
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@
           <div class="flex-auto p-4">
             <div class="flex flex-wrap">
               <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Número de usuários distintos</h5><span class="font-semibold text-xl text-blueGray-700">{{n_of_authors}}</span>
+                <h5 class="text-blueGray-400 uppercase font-bold text-xs">Number of unique users</h5><span class="font-semibold text-xl text-blueGray-700">{{n_of_authors}}</span>
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@
         <input type="range" id="cowbell" height="20px" name="cowbell" min="0" max="1" value="0.5" step="0.1">
         <span id="cowbell_value">0.5</span>
       </h5>
-      <h5 class="text-blueGray-400 uppercase font-bold text-xs title">Usuários verificados:   <input type="checkbox" id="verified" name="verified"></h5>
+      <h5 class="text-blueGray-400 uppercase font-bold text-xs title">Verified Users Only:   <input type="checkbox" id="verified" name="verified"></h5>
     </div>
     <canvas id="histogramUser" width="400" height="400"></canvas>
   </div>  
@@ -78,19 +78,19 @@
   <div class="histo">
     <div class="box-header">
       <h5 class="text-blueGray-400 uppercase font-bold text-xs title">
-        Distribuição de score dos Tweets coletados
+        Distribution of scores of the collected tweets from: 
       </h5>
       <h5 class="text-blueGray-400 uppercase font-bold text-xs title">
         <div>
 
           <input name="distributionValue" type="radio" checked="checked" value="7"/>
-          <label onclick="">Da última semana</label>
+          <label onclick="">Last Week</label>
         
           <input name="distributionValue" type="radio" value="30"/>
-          <label onclick="">Do último mês</label>
+          <label onclick="">Last Month</label>
         
           <input name="distributionValue" type="radio" value="365"/>
-          <label onclick="">Do último ano</label>
+          <label onclick="">Last Year</label>
     
         </div>
       </h5>

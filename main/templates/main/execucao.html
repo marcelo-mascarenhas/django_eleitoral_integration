@@ -2,20 +2,20 @@
 
 {% block body %}
 <main class="flex-container3">
-  <h1>Execução da ferramenta</h1>
+  <h1>Execution</h1>
 
     {% if running %}
       
-      <button type="button" class="btn btn-primary" onclick="location.href='{% url 'stopCollector' %}'">Parar coletor</button>
+      <button type="button" class="btn btn-primary" onclick="location.href='{% url 'stopCollector' %}'">Stop Collector</button>
     
     {% else %}
-      <button type="button" class="btn btn-primary" onclick="location.href='{% url 'executeCollector' %}'">Executar coletor</button>
+      <button type="button" class="btn btn-primary" onclick="location.href='{% url 'executeCollector' %}'">Start Collector</button>
       
       {% if error_msg != None %}
         <hr>
         <div class="alert">
           <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-          <strong>Erro:</strong><br>{{error_msg}}
+          <strong>Error:</strong><br>{{error_msg}}
         </div>
       {% endif %}
     {% endif %}

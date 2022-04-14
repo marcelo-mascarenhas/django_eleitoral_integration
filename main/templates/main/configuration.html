@@ -12,7 +12,7 @@
 
 {% block body %}
   
-  <h1 class='flex-container3'>Opções de configuração</h1>
+  <h1 class='flex-container3'>Configuration Options</h1>
   <div id="jsoneditor"></div>  
   
   <script>
@@ -23,14 +23,14 @@
   <form action="{% url 'configuration' %}" class='z-pad' method="POST" onsubmit="return fowardJson()" id="myform">
       {% csrf_token %}
       
-      <div>Selecione um método de detecção: {{ ml_methods.mtd }} 
+      <div>Select a detection method: {{ ml_methods.mtd }} 
         {{ ml_methods.twitter_configuration.as_hidden }}
       </div>
       <script>
         let new_data = "{{ selected }}";
         selectRightOption(new_data)</script>
       
-      <button type="submit" class="btn btn-primary">Salvar</button>    
+      <button type="submit" class="btn btn-primary">Save</button>    
   </form>
 
 {% endblock body %}

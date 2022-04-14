@@ -22,7 +22,7 @@
 
 {% block body%}
 
-<h1 class='flex-container3'=>Análise de Dados</h1>
+<h1 class='flex-container3'=>Data Analysis</h1>
   
 <div class="fx1">
   <div class="flex-left noselect">
@@ -36,15 +36,15 @@
       {{filtros.score_min.as_hidden}}
       {{filtros.score_max.as_hidden}}
 
-      <h4>Filtros</h4>
+      <h4>Filters</h4>
       <hr>
-      <h5>Barra de Busca</h5>
+      <h5>Search Bar</h5>
       <div class="wrap divisorias">
         <div class="search">
           <input type="text" class="searchTerm" name="search_bar" value="{{search}}">
         </div>
       </div>
-      <h5>Intervalo de Score</h5>
+      <h5>Score Range</h5>
       <div class="container divisorias">
         <div class="row">
           <div class="col-sm-12">
@@ -53,10 +53,10 @@
         </div>
         <div class="row slider-labels">
           <div class="col-xs-6 caption">
-            <strong>Minimo:</strong><span id="slider-range-value1"></span>
+            <strong>Minimum:</strong><span id="slider-range-value1"></span>
           </div>
           <div class="col-xs-6 text-right caption">
-            <strong>Máximo:</strong><span id="slider-range-value2"></span>
+            <strong>Maximum:</strong><span id="slider-range-value2"></span>
 
           </div>
         </div>
@@ -68,8 +68,8 @@
         </div>
       </div>
       <div class="fx1 container divisorias">
-        <p class="paddingRight">Data Mínima <input type="text" aria-label="Data Min" class="form-control datepicker" name="data_min" value="{{data_min}}"></p>
-        <p>Data Máxima <input type="text" aria-label="Data Max" class="form-control datepicker" aria-describedby="inputGroup-sizing-sm" name="data_max" value="{{data_max}}"></p>
+        <p class="paddingRight">Minimum Date <input type="text" aria-label="Data Min" class="form-control datepicker" name="data_min" value="{{data_min}}"></p>
+        <p>Maximum Date <input type="text" aria-label="Data Max" class="form-control datepicker" aria-describedby="inputGroup-sizing-sm" name="data_max" value="{{data_max}}"></p>
       </div>
       <div class="flex-container3">
         {{filtros.mtd.label_tag}} {{filtros.mtd}}
@@ -78,15 +78,15 @@
         selectRightOption(new_data)</script>
 
       <div class="resetandfilt divisorias">
-        <button type="" class="btn btn-primary" href={%url 'analise' %}>Resetar</button>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <button type="" class="btn btn-primary" href={%url 'analise' %}>Reset</button>
+        <button type="submit" class="btn btn-primary">Filter</button>
 
       </div>
     </form>
-    <h4>Estruturas</h4>
-    <a class="btn btn-primary" href="{% url 'plotWC' %}?{{parameters | safe}}" target="blank">Gerar Nuvem de Palavras</a>
+    <h4>Structures</h4>
+    <a class="btn btn-primary" href="{% url 'plotWC' %}?{{parameters | safe}}" target="blank">Generate Word Cloud</a>
     
-    <a class="btn btn-primary" style="margin-top:10px;"href="{% url 'plotCO' %}?{{parameters | safe}}" target="blank">Gerar Grafo de Co-ocorrência</a>
+    <a class="btn btn-primary" style="margin-top:10px;"href="{% url 'plotCO' %}?{{parameters | safe}}" target="blank">Generate Co-occurrence Graph</a>
 
   </div>
 
@@ -138,7 +138,7 @@
               <a class="page-link" href="?page=1&{{ parameters }}">&laquo;</a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="?page={{tweets.previous_page_number}}&{{ parameters }}">Anterior</a>
+              <a class="page-link" href="?page={{tweets.previous_page_number}}&{{ parameters }}">Previous</a>
             </li>
             
             {% if tweets.previous_page_number|sub:1 >= 1 %}
@@ -168,7 +168,7 @@
           {%endif%}
             
             <li class="page-item">
-              <a class="page-link" href="?page={{tweets.next_page_number}}&{{ parameters }}">Próxima</a>
+              <a class="page-link" href="?page={{tweets.next_page_number}}&{{ parameters }}">Next</a>
             </li>
             <li class="page-item">
               <a class="page-link" href="?page={{tweets.paginator.num_pages}}&{{ parameters }}">&raquo;</a>
