@@ -34,9 +34,9 @@ Open another terminal, and execute the following command:
 
 python3 manage.py rqworker
 
-Also, insert your Twitter Keys on the Configuration Page to enable the collector.
+Also, insert your Twitter Keys on the Configuration Page to enable the collector, and select RNN as the method.
 
-Click in the 'Start Collector' button.
+Click in the 'Start Collector' button at the execution page.
 
 
 
