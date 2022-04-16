@@ -8,6 +8,10 @@ After this step, install the requirements.txt ( preferebly on a virtual envirome
 
 python3 manage.py runserver
 
+Open another terminal, and execute the following command:
+
+python3 manage.py rqworker
+
 Enter in the link.
 
 ### System's Administrator Session
