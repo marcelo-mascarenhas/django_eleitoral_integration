@@ -6,9 +6,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pyvis.network import Network
 
-MIN = 3
-MAX = 100
+MIN = 5
+MAX = 150
 
+
+def checkNumber(a):
+  if a.isdigit():
+    return True
+  elif a.replace('.','',1).isdigit() and a.count('.') < 2:
+    return True
+  elif a.replace(',','',1).isdigit() and a.count(',') < 2:
+    return True
+  else:
+    return False
 
 def normalize_min_max(a, b, ndict):
   """
@@ -63,12 +73,14 @@ def generateCoOccurrence(bigrams, name):
   N.barnes_hut()
   
   for key, value in nodedic.items():
+    if checkNumber(key):
+      continue
     N.add_node(key, size=value, fontSize=value)
   
     
   for name_tuple, count in big:
     id1, id2 = name_tuple
-    if id1 == id2:
+    if id1 == id2 or checkNumber(id2) or checkNumber(id1):
       continue
     N.add_edge(id1, id2, value=count)  
   

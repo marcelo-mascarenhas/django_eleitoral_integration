@@ -2,9 +2,9 @@
 /* Declaração das variáveis responsáveis pela tradução dos valores na interface */
 
 //Translated keys
-const PT_ACCESS_KEYS = 'Chaves de acesso';
-const PT_KEYWORDS = 'Palavras-chave';
-const PT_ONLY_PT = 'Somente portugues';
+const PT_ACCESS_KEYS = 'Access Keys';
+const PT_KEYWORDS = 'Keywords';
+const PT_ONLY_PT = 'Only Portuguese';
 
 
 // Original keys

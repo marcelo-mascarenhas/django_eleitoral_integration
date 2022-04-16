@@ -3,7 +3,7 @@ from datetime import datetime
 import copy
 import os
 
-METODOS_POSSIVEIS = ["preliminar", "naive_bayes", "rnn", "han", "lstm", "cnn"]
+METODOS_POSSIVEIS = ["rnn", "naive_bayes"]
 METODOS_CLASSICOS = ["naive_bayes"]
 METODOS_DEEP_LEARNING = ["rnn", "han", "lstm", "cnn"]
 

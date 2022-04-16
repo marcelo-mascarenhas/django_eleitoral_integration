@@ -8,7 +8,8 @@ from py import process
 
 from .models import ExecutionHandler, MachineLearningMethod, Tweet
 
-from integrated.settings import COLLECTOR_JOB_ID, CONFIGURATION_PATH, TWITTER_FILE_NAME, ELECT_FILE_NAME, USER_FILTER_PATTERN
+from integrated.settings import COLLECTOR_JOB_ID, CONFIGURATION_PATH, TWITTER_FILE_NAME, ELECT_FILE_NAME, USER_FILTER_PATTERN,COLLECTOR_JOB_NAME
+
 from .monitor.source.identificacao.identificacao import METODOS_POSSIVEIS
 
 
@@ -19,6 +20,7 @@ def doesJobExists(job_name):
     return False
   else:
     return True
+
   
 def getJob(job_name):
   job = (django_rq.get_queue()).fetch_job(job_id=job_name)
@@ -75,7 +77,6 @@ class FilterHandler():
     filters['max_score'] = request.GET.get('score_max') if request.GET.get('max_value') != None else 1
     
     filters['sort_by'] = request.GET.get('mtd') if request.GET.get('mtd') != None else "electoral_score"
-    print("Saiu daqui")
     return filters
 
   def getFilteredTwitterList(self, filters):
@@ -104,7 +105,7 @@ class FilterHandler():
       #Format the data DD/MM/YYYY to YYYY/MM/DD
       twitter_list = twitter_list.filter(
         created_at__range=[datetime.date(inferior_range[2], inferior_range[1], inferior_range[0]), 
-          datetime.date(superior_range[2], superior_range[1], superior_range[0])])
+          datetime.date(superior_range[2], superior_range[1], superior_range[0]+1)])
     
     
     twitter_list = twitter_list.filter(electoral_score__range=[filters['min_score'], filters['max_score']])
@@ -134,6 +135,15 @@ class FilterHandler():
 def move_file(base, destination):
   shutil.move(base, destination)
 
+def dje(job_name):
+  task_queue = django_rq.get_queue()
+  job = task_queue.fetch_job(job_id=job_name)
+  if job == None:
+    return False
+  else:
+    collector_job = getJob(COLLECTOR_JOB_NAME)
+    condition = collector_job.get_status()    
+    return False if condition == "failed" else True
 
 
 class FileHandler():
@@ -189,4 +199,3 @@ class FileHandler():
       f.flush()
       f.close()
       
-    

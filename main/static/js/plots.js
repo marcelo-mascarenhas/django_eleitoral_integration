@@ -94,7 +94,7 @@ function generateHistogram(data, score){
         x: {
           title: {
             display: true,
-            text: 'Identificador do usuário',
+            text: 'User ID',
             font: {
               family: 'Times',
               size: 20,
@@ -106,7 +106,7 @@ function generateHistogram(data, score){
         y: {
           title: {
             display: true,
-            text: 'Quantidade de Tweets',
+            text: 'Tweet Count',
             font: {
               family: 'Times',
               size: 20,
@@ -167,7 +167,7 @@ function generateScoreDistribution(data){
     data: {
         labels:Object.keys(data),
         datasets: [{
-            label: `Quantidade de Tweets`,
+            label: `Tweet Count`,
             data: Object.values(data),
             backgroundColor: [
               'rgba(201, 203, 207, 0.2)'
@@ -208,7 +208,7 @@ function generateScoreDistribution(data){
         y: {
           title: {
             display: true,
-            text: 'Quantidade de Tweets',
+            text: 'Tweet Count',
             font: {
               family: 'Times',
               size: 20,

@@ -44,7 +44,10 @@ def index(request):
   #Tweets retrieved in the last week
   london_time = timezone.now() + timedelta(hours=3)
   tlw = Tweet.objects.filter(created_at__range=[london_time - timedelta(days=7), london_time])
+  tld = Tweet.objects.filter(created_at__range=[london_time - timedelta(days=1), london_time])
+  tld = tld.count()
   tlw = tlw.count()
+  running = dje(COLLECTOR_JOB_NAME)
 
   avg_score = None
   try:
@@ -59,7 +62,9 @@ def index(request):
     'avg_score': avg_score,
     'n_of_authors': number_of_authors,
     'n_of_tlw': tlw,
-    'authors': authors
+    'n_of_tld': tld,
+    'authors': authors,
+    'running': running
   })
   
 @user_passes_test(lambda u: u.is_superuser)
@@ -155,6 +160,7 @@ class Configuration(FormView):
   @method_decorator(user_passes_test(lambda u: u.is_superuser))
  
   def get(self, request, error_msg=None):
+    running = dje(COLLECTOR_JOB_NAME)
     
     file_information = self.fih.getTwitterConfigurationFile()
     
@@ -165,7 +171,8 @@ class Configuration(FormView):
       'json_information': file_information,
       'ml_methods': self.config_forms,
       'error': error_msg,
-      'selected': selected
+      'selected': selected,
+      'running': running
     })
   
   def post(self, request):
@@ -197,9 +204,11 @@ class DataAnalysis(FormView):
   
   filt_obj = FilterHandler()
 
-  PAG_NUMBER = 5
+  PAG_NUMBER = 10
   
   def get(self, request):
+    running = dje(COLLECTOR_JOB_NAME)
+
     parameters, filters, tweet_list = self.__getParameters(request)
 
     empty_query = True if tweet_list.count() == 0 else False
@@ -220,7 +229,8 @@ class DataAnalysis(FormView):
      'max_score': filters['max_score'],
      'sort_by': filters['sort_by'],
      'parameters': parameters,
-     'empty_query': empty_query
+     'empty_query': empty_query,
+     'running': running
     })
   
   def __getParameters(self, request):

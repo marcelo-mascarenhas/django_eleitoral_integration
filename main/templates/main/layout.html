@@ -27,7 +27,13 @@
   </head>
     <header class="flex-container">
         <div>
-            <h1 id='title'>Monitor of Early Electoral Propaganda</h1>
+            <h1 id='title'>EarlyAd</h1>
+            Collector Status:
+            {% if running %}
+            <strong>Running</strong>
+            {% else %}
+            <strong>Stopped</strong>
+            {% endif %}
         </div>
         <nav>
             <ul class="nav">

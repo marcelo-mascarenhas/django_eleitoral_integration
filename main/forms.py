@@ -16,20 +16,20 @@ def calculatePossible(listinha):
 
 class ConfigurationForm(forms.Form):
   choices = calculatePossible(METODOS_POSSIVEIS)
-  mtd = forms.CharField(label='Escolha um método de detecção: ', \
+  mtd = forms.CharField(label='Choose a detection method: ', \
     widget=forms.Select(choices=choices))
   
   twitter_configuration = forms.CharField()
   
 class OrderBy(forms.Form):
   MY_CHOICES = (
-    ('created_at', 'Data de Criação'),
-    ('like_count', 'Quantidade de Curtidas'),
-    ('retweet_count', 'Quantidade de Retweets'),
-    ('reply_count', 'Quantidade de Respostas'),
+    ('created_at', 'Creation Date'),
+    ('like_count', 'Like Count'),
+    ('retweet_count', 'Retweet Count'),
+    ('reply_count', 'Answer Count'),
     ('electoral_score', 'Score'),
   )
-  mtd = forms.CharField(label='Ordenar por:', \
+  mtd = forms.CharField(label='Order by:', \
     widget=forms.Select(choices=MY_CHOICES))
 
   score_min = forms.FloatField()
