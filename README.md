@@ -31,6 +31,7 @@ After logging in, click on the 'View Site' option and the Configuration and Exec
 
 To execute the tool, first you need to install all the dependencies download the Trained model (RNN) in the following link:
 https://drive.google.com/drive/folders/1Li9zMkeLExxt37GCkaaFLONajALgf2pF?usp=sharing ( We can't put in github because of the size )
+
 After the download, insert the folders in the following directory: ../main/monitor/model_files/
 
 Also, insert your Twitter Keys on the Configuration Page to enable the collector.
