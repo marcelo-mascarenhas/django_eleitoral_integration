@@ -1,16 +1,16 @@
 # django_eleitoral_integration
 
 
-# Execution Instructions
+## Execution Instructions
 
-# User Session
+### User Session
 After this step, install the requirements.txt ( preferebly on a virtual enviroment ), and run the command in the base directory:
 
 python3 manage.py runserver
 
 Enter in the link.
 
-# System's Administrator Session
+### System's Administrator Session
 
 To execute the tool, first you need to install all the dependencies download the Trained model (RNN) in the following link:
 https://drive.google.com/drive/folders/1Li9zMkeLExxt37GCkaaFLONajALgf2pF?usp=sharing
@@ -19,10 +19,10 @@ After the download, inserted it in the following directory: ../integrated/main/m
 
 To enter in the system's administrator session, you need to run the following command on the base directory:
 
-                                              python3 manage.py createsuperuser 
+                  python3 manage.py createsuperuser 
 
 And register a user. After this, you can access the django admin page on:
 
-                                                http://127.0.0.1:8000/admin/
+                  http://127.0.0.1:8000/admin/
 
 After logging in, click on the 'View Site' option and the Configuration and Execution pages should appear.
