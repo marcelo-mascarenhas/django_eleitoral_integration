@@ -8,10 +8,6 @@ After this step, install the requirements.txt ( preferebly on a virtual envirome
 
 python3 manage.py runserver
 
-Open another terminal, and execute the following command:
-
-python3 manage.py rqworker
-
 Enter in the link.
 
 ### System's Administrator Session
@@ -29,12 +25,18 @@ After logging in, click on the 'View Site' option and the Configuration and Exec
 
 ### Execute Collector and Classifier
 
-To execute the tool, first you need to install all the dependencies download the Trained model (RNN) in the following link:
+To execute the tool, first you need download the Trained model (RNN) in the following link:
 https://drive.google.com/drive/folders/1Li9zMkeLExxt37GCkaaFLONajALgf2pF?usp=sharing ( We can't put in github because of the size )
 
 After the download, insert the folders in the following directory: ../main/monitor/model_files/
 
+Open another terminal, and execute the following command:
+
+python3 manage.py rqworker
+
 Also, insert your Twitter Keys on the Configuration Page to enable the collector.
+
+Click in the 'Start Collector' button.
 
 
 
