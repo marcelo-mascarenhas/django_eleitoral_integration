@@ -21,6 +21,6 @@ To execute the tool, first you need to install all the dependencies download the
 
 https://drive.google.com/drive/folders/1Li9zMkeLExxt37GCkaaFLONajALgf2pF?usp=sharing
 
-After the download, inserted it in the following directory: ../integrated/main/monitor/model_files/
+After the download, inserted it in the following directory: ../main/monitor/model_files/
 
 Also, you need to insert the Twitter Keys in the configuration page.
