@@ -1,4 +1,3 @@
-from tkinter import font
 import networkx as nx
 import itertools
 import collections
